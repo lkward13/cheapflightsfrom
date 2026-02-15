@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Old WordPress destinations pages
       {
         source: "/destinations",
         destination: "/",
@@ -18,6 +19,52 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/destinations/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      // WordPress system URLs — redirect to homepage
+      {
+        source: "/wp-admin",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/wp-admin/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/wp-login.php",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/wp-content/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/feed",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/feed/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/author/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/category/:path*",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/tag/:path*",
         destination: "/",
         permanent: true,
       },
