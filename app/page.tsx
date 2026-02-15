@@ -42,7 +42,7 @@ export default function Home() {
         className="relative text-white py-24 sm:py-32 px-4 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/hero.jpg')" }}
       >
-        <div className="absolute inset-0 bg-brand-dark/70" />
+        <div className="absolute inset-0 bg-brand-dark/50" />
         <div className="relative max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 drop-shadow-lg">
             <span className="text-brand-gold">Pay Less.</span>{" "}
