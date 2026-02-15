@@ -55,15 +55,15 @@ export async function getHubDestinations(
       AND ri.sample_size >= 5
       AND ri.typical_price IS NOT NULL
     ORDER BY ri.low_price_threshold ASC NULLS LAST
-    LIMIT 50`,
+    LIMIT 80`,
     [airportCodes]
   );
 }
 
-/** Count total routes tracked for a metro */
-export async function getRouteCount(airportCodes: string[]): Promise<number> {
+/** Count unique destinations tracked for a metro */
+export async function getDestinationCount(airportCodes: string[]): Promise<number> {
   const rows = await query<{ count: string }>(
-    `SELECT COUNT(*) as count FROM route_insights
+    `SELECT COUNT(DISTINCT TRIM(destination)) as count FROM route_insights
      WHERE origin = ANY($1) AND data_quality IN ('high', 'medium')`,
     [airportCodes]
   );

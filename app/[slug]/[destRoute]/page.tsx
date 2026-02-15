@@ -135,7 +135,7 @@ export default async function RoutePage({ params }: PageProps) {
           href={`https://www.google.com/travel/flights?q=flights+from+${insights.origin.trim()}+to+${destIata}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-brand-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
+          className="inline-flex items-center gap-2 bg-brand-dark text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-primary transition-colors"
         >
           Search Flights on Google
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

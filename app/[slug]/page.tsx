@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { METROS, METRO_BY_SLUG } from "@/lib/metro-data";
+import { METROS, METRO_BY_SLUG, isDomestic } from "@/lib/metro-data";
 import { getCityName } from "@/lib/city-mapping";
-import { getHubDestinations, getRouteCount, getRecentDeals } from "@/lib/queries";
+import { getHubDestinations, getDestinationCount, getRecentDeals } from "@/lib/queries";
 import { formatPrice, getCheapestMonths } from "@/lib/utils";
 import PriceTable from "@/components/PriceTable";
 import MonthlyCalendar from "@/components/MonthlyCalendar";
@@ -34,12 +34,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const destinations = await getHubDestinations(metro.airports);
   const cheapest = destinations[0]?.low_price_threshold;
-  const routeCount = await getRouteCount(metro.airports);
+  const destCount = await getDestinationCount(metro.airports);
   const codes = metro.airports.join(", ");
 
   return {
     title: `Cheap Flights From ${metro.displayName} - Deals from ${formatPrice(cheapest)}`,
-    description: `Find cheap flights from ${metro.displayName} (${codes}). Fares as low as ${formatPrice(cheapest)}. We track ${routeCount} routes daily and alert you when prices drop.`,
+    description: `Find cheap flights from ${metro.displayName} (${codes}). Fares as low as ${formatPrice(cheapest)}. We track ${destCount} destinations daily and alert you when prices drop.`,
     openGraph: {
       title: `Cheap Flights From ${metro.displayName}`,
       description: `Deals starting at ${formatPrice(cheapest)} from ${codes}`,
@@ -61,6 +61,35 @@ function deduplicateByDestination(
     }
   }
   return [...best.values()];
+}
+
+/** Interleave domestic and international so both appear throughout the table */
+function mixDomesticInternational(
+  deduped: Awaited<ReturnType<typeof getHubDestinations>>
+) {
+  const domestic = deduped.filter((d) => isDomestic(d.destination));
+  const international = deduped.filter((d) => !isDomestic(d.destination));
+
+  // Sort each group by cheapest
+  domestic.sort((a, b) => (a.low_price_threshold || 9999) - (b.low_price_threshold || 9999));
+  international.sort((a, b) => (a.low_price_threshold || 9999) - (b.low_price_threshold || 9999));
+
+  // Interleave: ~3 domestic per 1 international to create a natural mix
+  const mixed: typeof deduped = [];
+  let di = 0;
+  let ii = 0;
+  while (mixed.length < 50 && (di < domestic.length || ii < international.length)) {
+    // Add up to 3 domestic
+    for (let n = 0; n < 3 && di < domestic.length; n++) {
+      mixed.push(domestic[di++]);
+    }
+    // Add 1 international
+    if (ii < international.length) {
+      mixed.push(international[ii++]);
+    }
+  }
+
+  return mixed;
 }
 
 function aggregateMonthlyPrices(
@@ -93,14 +122,15 @@ export default async function HubPage({ params }: PageProps) {
   const metro = METRO_BY_SLUG[metroSlug];
   if (!metro) notFound();
 
-  const [destinations, routeCount, recentDeals] = await Promise.all([
+  const [destinations, destCount, recentDeals] = await Promise.all([
     getHubDestinations(metro.airports),
-    getRouteCount(metro.airports),
+    getDestinationCount(metro.airports),
     getRecentDeals(metro.airports),
   ]);
 
-  const deduped = deduplicateByDestination(destinations);
-  const monthlyAgg = aggregateMonthlyPrices(deduped);
+  const dedupedAll = deduplicateByDestination(destinations);
+  const deduped = mixDomesticInternational(dedupedAll);
+  const monthlyAgg = aggregateMonthlyPrices(dedupedAll);
   const cheapMonths = getCheapestMonths(monthlyAgg, 3);
 
   const airportDesc =
@@ -112,8 +142,8 @@ export default async function HubPage({ params }: PageProps) {
     {
       question: `What is the cheapest flight from ${metro.displayName}?`,
       answer: deduped[0]
-        ? `The cheapest flights from ${metro.displayName} are to ${getCityName(deduped[0].destination)} starting at ${formatPrice(deduped[0].low_price_threshold)}. We track ${routeCount} routes daily to find the best deals.`
-        : `We track ${routeCount} routes from ${metro.displayName} daily. Check back for current deals.`,
+        ? `The cheapest flights from ${metro.displayName} are to ${getCityName(deduped[0].destination)} starting at ${formatPrice(deduped[0].low_price_threshold)}. We track ${destCount} destinations daily to find the best deals.`
+        : `We track ${destCount} destinations from ${metro.displayName} daily. Check back for current deals.`,
     },
     {
       question: `When is the cheapest time to fly from ${metro.displayName}?`,
@@ -140,7 +170,7 @@ export default async function HubPage({ params }: PageProps) {
         Cheap Flights From {metro.displayName}
       </h1>
       <p className="text-gray-600 mb-8">
-        We track prices on {routeCount} routes from {airportDesc} daily.
+        We track prices to {destCount} destinations from {airportDesc} daily.
         Here are the best fares right now.
       </p>
 

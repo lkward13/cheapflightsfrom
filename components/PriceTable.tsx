@@ -81,7 +81,7 @@ export default function PriceTable({ destinations, metroSlug }: PriceTableProps)
             return (
               <tr
                 key={`${dest.origin}-${dest.destination}`}
-                className={`border-b border-gray-100 hover:bg-blue-50/50 transition-colors ${i % 2 === 0 ? "bg-white" : "bg-gray-50/30"}`}
+                className={`border-b border-gray-100 hover:bg-brand-light/50 transition-colors ${i % 2 === 0 ? "bg-white" : "bg-gray-50/30"}`}
               >
                 <td className="px-4 py-3">
                   <Link

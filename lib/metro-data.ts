@@ -143,3 +143,16 @@ export const REGION_LABELS: Record<Region, string> = {
   northeast: "Northeast",
   southeast: "Southeast",
 };
+
+// Set of all US airport IATA codes we track (for classifying domestic vs international)
+export const US_AIRPORTS = new Set<string>();
+for (const metro of METROS) {
+  for (const airport of metro.airports) {
+    US_AIRPORTS.add(airport);
+  }
+}
+
+/** Returns true if the IATA code is a known US domestic airport */
+export function isDomestic(iata: string): boolean {
+  return US_AIRPORTS.has(iata.trim());
+}
