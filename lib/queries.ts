@@ -86,6 +86,67 @@ export async function getRecentDeals(
   );
 }
 
+// ---- Cheapest Flights Now (matrix_prices) ----
+
+export interface CheapestNow {
+  origin: string;
+  destination: string;
+  price: number;
+  scraped_date: string;
+}
+
+/** Get cheapest current flights from matrix_prices (last 3 days) */
+export async function getCheapestFlightsNow(
+  airportCodes: string[],
+  limit = 20
+): Promise<CheapestNow[]> {
+  return query<CheapestNow>(
+    `SELECT
+      TRIM(origin) as origin,
+      TRIM(destination) as destination,
+      MIN(price) as price,
+      MAX(scraped_date::text) as scraped_date
+    FROM matrix_prices
+    WHERE origin = ANY($1)
+      AND scraped_date > NOW() - INTERVAL '3 days'
+    GROUP BY TRIM(origin), TRIM(destination)
+    ORDER BY MIN(price) ASC
+    LIMIT $2`,
+    [airportCodes, limit]
+  );
+}
+
+// ---- All Destinations by Region (route_insights) ----
+
+export interface RegionDestination {
+  origin: string;
+  destination: string;
+  typical_price: number | null;
+  low_price_threshold: number | null;
+  sample_size: number;
+}
+
+/** Get ALL qualifying destinations for the region browser (no LIMIT) */
+export async function getAllHubDestinations(
+  airportCodes: string[]
+): Promise<RegionDestination[]> {
+  return query<RegionDestination>(
+    `SELECT
+      TRIM(ri.origin) as origin,
+      TRIM(ri.destination) as destination,
+      ri.typical_price,
+      ri.low_price_threshold,
+      ri.sample_size
+    FROM route_insights ri
+    WHERE ri.origin = ANY($1)
+      AND ri.data_quality IN ('high', 'medium')
+      AND ri.sample_size >= 5
+      AND ri.typical_price IS NOT NULL
+    ORDER BY ri.low_price_threshold ASC NULLS LAST`,
+    [airportCodes]
+  );
+}
+
 // ---- Route Page Queries ----
 
 /** Get route insights -- picks best airport for a multi-airport metro */

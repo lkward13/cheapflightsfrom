@@ -2,10 +2,25 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { METROS, METRO_BY_SLUG, isDomestic } from "@/lib/metro-data";
 import { getCityName } from "@/lib/city-mapping";
-import { getHubDestinations, getDestinationCount, getRecentDeals } from "@/lib/queries";
+import {
+  getHubDestinations,
+  getDestinationCount,
+  getRecentDeals,
+  getCheapestFlightsNow,
+  getAllHubDestinations,
+} from "@/lib/queries";
 import { formatPrice, getCheapestMonths } from "@/lib/utils";
+import {
+  getDestRegion,
+  REGION_LABELS,
+  REGION_ORDER,
+  type DestRegion,
+} from "@/lib/destination-regions";
 import PriceTable from "@/components/PriceTable";
 import MonthlyCalendar from "@/components/MonthlyCalendar";
+import CheapestNow from "@/components/CheapestNow";
+import RegionTabs from "@/components/RegionTabs";
+import type { RegionDestRow } from "@/components/RegionTabs";
 import FAQSection from "@/components/FAQSection";
 import BreadCrumb from "@/components/BreadCrumb";
 
@@ -122,21 +137,64 @@ export default async function HubPage({ params }: PageProps) {
   const metro = METRO_BY_SLUG[metroSlug];
   if (!metro) notFound();
 
-  const [destinations, destCount, recentDeals] = await Promise.all([
-    getHubDestinations(metro.airports),
-    getDestinationCount(metro.airports),
-    getRecentDeals(metro.airports),
-  ]);
+  const [destinations, destCount, recentDeals, cheapestNow, allDestinations] =
+    await Promise.all([
+      getHubDestinations(metro.airports),
+      getDestinationCount(metro.airports),
+      getRecentDeals(metro.airports),
+      getCheapestFlightsNow(metro.airports, 30),
+      getAllHubDestinations(metro.airports),
+    ]);
 
   const dedupedAll = deduplicateByDestination(destinations);
   const deduped = mixDomesticInternational(dedupedAll);
   const monthlyAgg = aggregateMonthlyPrices(dedupedAll);
   const cheapMonths = getCheapestMonths(monthlyAgg, 3);
 
+  // Build region-tagged destination list (deduplicated)
+  const regionDestMap = new Map<string, RegionDestRow>();
+  for (const d of allDestinations) {
+    const existing = regionDestMap.get(d.destination);
+    if (
+      !existing ||
+      (d.low_price_threshold || 9999) < (existing.low_price_threshold || 9999)
+    ) {
+      regionDestMap.set(d.destination, {
+        destination: d.destination,
+        low_price_threshold: d.low_price_threshold,
+        typical_price: d.typical_price,
+        region: getDestRegion(d.destination),
+      });
+    }
+  }
+  const regionDests = [...regionDestMap.values()].sort(
+    (a, b) => (a.low_price_threshold || 9999) - (b.low_price_threshold || 9999)
+  );
+
+  // Count destinations per region
+  const regionCounts = {} as Record<DestRegion, number>;
+  for (const r of REGION_ORDER) regionCounts[r] = 0;
+  for (const d of regionDests) regionCounts[d.region]++;
+
+  // Count international destinations for FAQ
+  const intlCount = regionDests.filter((d) => d.region !== "domestic").length;
+
   const airportDesc =
     metro.airports.length > 1
       ? `${metro.airports.join(", ")} airports`
       : `${metro.airports[0]} airport`;
+
+  // Build international region summary for FAQ
+  const intlRegionSummaries: string[] = [];
+  for (const r of REGION_ORDER) {
+    if (r === "domestic" || regionCounts[r] === 0) continue;
+    const cheapest = regionDests.find((d) => d.region === r);
+    if (cheapest) {
+      intlRegionSummaries.push(
+        `${REGION_LABELS[r]} (${regionCounts[r]} destinations, from ${formatPrice(cheapest.low_price_threshold)})`
+      );
+    }
+  }
 
   const faqItems = [
     {
@@ -151,6 +209,14 @@ export default async function HubPage({ params }: PageProps) {
         ? `Based on our data, ${cheapMonths.join(", ")} tend to have the lowest fares from ${metro.displayName}. Prices vary by destination — check individual routes for specifics.`
         : `Prices vary by destination. Check individual route pages for the best months to fly.`,
     },
+    ...(intlCount > 0
+      ? [
+          {
+            question: `Can I find cheap international flights from ${metro.displayName}?`,
+            answer: `Yes! We track ${intlCount} international destinations from ${metro.displayName} across ${intlRegionSummaries.length} regions: ${intlRegionSummaries.join("; ")}. Use the "Browse Destinations by Region" section above to explore flights by continent.`,
+          },
+        ]
+      : []),
     {
       question: `How do I get flight deal alerts from ${metro.displayName}?`,
       answer: `Sign up for our free email alerts and we'll send you the best deals from ${airportDesc} as soon as we find them.`,
@@ -176,12 +242,27 @@ export default async function HubPage({ params }: PageProps) {
 
       {deduped.length > 0 ? (
         <>
+          {/* Cheapest flights right now (live matrix prices) */}
+          <CheapestNow
+            flights={cheapestNow}
+            metroSlug={metro.slug}
+            metroName={metro.displayName}
+          />
+
+          {/* Classic top destinations table */}
           <section className="mb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Top Destinations
             </h2>
             <PriceTable destinations={deduped} metroSlug={metro.slug} />
           </section>
+
+          {/* Region-tabbed browser */}
+          <RegionTabs
+            destinations={regionDests}
+            metroSlug={metro.slug}
+            regionCounts={regionCounts}
+          />
 
           <MonthlyCalendar
             data={monthlyAgg}
