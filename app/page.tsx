@@ -10,22 +10,27 @@ const FAQ_ITEMS = [
   {
     question: "Where are the cheapest places to fly?",
     answer:
-      "The cheapest flights we find often include routes to Las Vegas, Cancun, New York City, Atlanta, Seattle, and Denver. Prices vary by origin city and time of year.",
+      "The cheapest domestic flights are typically to hub cities like Atlanta, Denver, Las Vegas, and Chicago where airline competition drives prices down. For international travel, Cancun, San Juan, and Guatemala City are consistently among the lowest fares from most US cities. Browse your departure city page to see what's cheapest right now.",
   },
   {
-    question: "How do I find discounted flights?",
+    question: "How far in advance should I book flights?",
     answer:
-      "We track prices on thousands of routes daily using advanced algorithms. When we detect a fare drop significantly below the typical price, we flag it as a deal. Browse any origin city page to see current deals.",
+      "For domestic flights, 3-5 weeks ahead is the sweet spot. International fares are best booked 6-8 weeks out. Booking too early (3+ months) or too late (under a week) usually costs more. That said, we regularly find last-minute deals that beat the average -- that's why our email alerts are so valuable.",
   },
   {
-    question: "Which is the cheapest flight ticket you've found?",
+    question: "How does Cheap Flights From find deals?",
     answer:
-      "We regularly find domestic fares under $50 and international fares 40-60% below typical prices. Deals can be found as low as $29 for domestic flights.",
+      "We scan thousands of routes daily using automated price-tracking systems. Every fare is compared against months of historical pricing data for that specific route. When a price drops below the 25th percentile -- meaning it's cheaper than 75% of all fares we've ever seen on that route -- we flag it as a deal and send it to subscribers.",
   },
   {
-    question: "How does Cheap Flights From find flight deals?",
+    question: "Are budget airline deals worth it?",
     answer:
-      "We use automated price tracking across thousands of routes, comparing current fares against historical data. When a price drops below the 25th percentile for a route, we flag it as a deal.",
+      "It depends on your bags. Airlines like Frontier and Spirit offer very low base fares, but checked bag fees ($35-65 each way) can erase the savings. If you can travel with just a personal item, budget carriers are great. If you need bags, compare the total cost against major airlines -- sometimes a $150 Delta fare beats a $79 Spirit fare after bag fees.",
+  },
+  {
+    question: "How long do flight deals last?",
+    answer:
+      "Most deals last 24-72 hours before prices go back up. Some especially popular routes sell out in under 12 hours. That's why we recommend signing up for email alerts so you can act fast when we spot a price drop.",
   },
 ];
 
@@ -98,18 +103,47 @@ export default function Home() {
           </h2>
           <div className="space-y-4">
             {[
-              "Book at least three weeks ahead for the best prices. We also find last-minute deals within 1-7 days and share them in our alerts.",
-              "June and July are typically the most expensive months to fly. January and February offer the lowest fares, but we find deals to sunny destinations year-round.",
-              "Tuesdays and Wednesdays often have the most budget-friendly fares. For weekend trips to Vegas, try departing Wednesday or Friday.",
-              "Domestic flights are often cheapest for 4-5 day trips. For international travel, look at 7, 10, or 14-day itineraries for the best value.",
-              "Budget carriers like Frontier, Spirit, JetBlue, and Southwest often offer the lowest base fares from many airports.",
-              "Flying Southwest? They let you check two bags free, and skis plus boots count as just one item.",
+              {
+                title: "Book 3-8 weeks out for the sweet spot",
+                body: "Domestic flights are cheapest 3-5 weeks before departure. International fares hit their lowest 6-8 weeks ahead. We also catch last-minute drops within 1-7 days and share them instantly in our alerts.",
+              },
+              {
+                title: "Fly in January, February, or September",
+                body: "These are consistently the cheapest months to fly. June and July are the priciest. Shoulder seasons (April-May, October-November) are great for deals to popular vacation spots without peak crowds.",
+              },
+              {
+                title: "Be flexible on your travel day",
+                body: "Tuesdays and Wednesdays often have the lowest fares. For weekend getaways, try departing on a Wednesday and returning on a Monday. A one-day shift can save you $50-100+ per ticket.",
+              },
+              {
+                title: "Compare total cost, not just the base fare",
+                body: "Budget carriers like Frontier and Spirit advertise low fares, but bag fees add up fast. Always compare the total cost with bags included. A $30 \"cheap\" fare with $70 in bag fees isn't a deal.",
+              },
+              {
+                title: "Use Google Flights' date grid and price tracking",
+                body: "The date grid shows prices across an entire month at a glance. Turn on price tracking for routes you're watching. We do this across thousands of routes daily so you don't have to.",
+              },
+              {
+                title: "Consider nearby airports",
+                body: "Flying into a secondary airport can save serious money. Think Oakland instead of SFO, Fort Lauderdale instead of Miami, or Midway instead of O'Hare. Our metro pages already combine nearby airports so you see every option.",
+              },
+              {
+                title: "Book one-way tickets for more flexibility",
+                body: "Mixing airlines on separate one-way tickets often beats a round-trip fare. Fly out on one carrier and back on another to combine the cheapest options each way.",
+              },
+              {
+                title: "Set it and forget it with deal alerts",
+                body: "The best deals sell out in 24-72 hours. Sign up for our free email alerts and we'll notify you the moment fares drop on your routes -- no need to check every day.",
+              },
             ].map((tip, i) => (
               <div key={i} className="flex gap-3 bg-white rounded-lg p-4 shadow-sm">
                 <span className="text-brand-primary font-bold text-lg shrink-0">
                   {i + 1}.
                 </span>
-                <p className="text-gray-700">{tip}</p>
+                <div>
+                  <p className="font-semibold text-gray-900">{tip.title}</p>
+                  <p className="text-gray-600 mt-1">{tip.body}</p>
+                </div>
               </div>
             ))}
           </div>
