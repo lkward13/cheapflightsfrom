@@ -38,16 +38,20 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-brand-dark text-white py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+      <section
+        className="relative text-white py-24 sm:py-32 px-4 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/hero.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-brand-dark/70" />
+        <div className="relative max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 drop-shadow-lg">
             <span className="text-brand-gold">Pay Less.</span>{" "}
             <span className="text-white">Travel More.</span>
           </h1>
-          <p className="text-xl text-white/80 mb-6">
+          <p className="text-xl text-white/90 mb-6 drop-shadow">
             Flight Deals From Your City To Your Favorite Destination
           </p>
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+          <p className="text-lg text-white/70 max-w-2xl mx-auto drop-shadow">
             We track prices on thousands of routes daily and alert you when fares drop.
             Save more and search less.
           </p>
