@@ -1,13 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { METROS, METRO_BY_SLUG, AIRPORT_TO_METRO } from "@/lib/metro-data";
+import { METRO_BY_SLUG } from "@/lib/metro-data";
 import { getCityName, getDestSlug, findIataFromSlug } from "@/lib/city-mapping";
 import {
   getRouteInsights,
   getRoutePriceTrend,
   getDestinationsForOrigins,
-  getAllQualifyingRoutes,
 } from "@/lib/queries";
 import { formatPrice, getCheapestMonths, generateBestTimeNarrative } from "@/lib/utils";
 import PriceSummaryCard from "@/components/PriceSummaryCard";
@@ -16,6 +15,7 @@ import PriceTrend from "@/components/PriceTrend";
 import BreadCrumb from "@/components/BreadCrumb";
 
 export const revalidate = 14400; // ISR: 4 hours
+export const dynamicParams = true; // Allow on-demand generation
 
 const HUB_PREFIX = "cheap-flights-from-";
 const DEST_PREFIX = "to-";
@@ -28,24 +28,10 @@ function parseParams(slug: string, destRoute: string) {
   return { metroSlug, destSlug };
 }
 
+// Don't pre-generate 28K+ route pages at build time.
+// They'll be generated on first visit and cached via ISR.
 export async function generateStaticParams() {
-  const routes = await getAllQualifyingRoutes();
-  const paramsMap = new Map<string, { slug: string; destRoute: string }>();
-
-  for (const route of routes) {
-    const metro = AIRPORT_TO_METRO[route.origin.trim()];
-    if (!metro) continue;
-    const dSlug = getDestSlug(route.destination.trim());
-    const key = `${metro.slug}|${dSlug}`;
-    if (!paramsMap.has(key)) {
-      paramsMap.set(key, {
-        slug: `${HUB_PREFIX}${metro.slug}`,
-        destRoute: `${DEST_PREFIX}${dSlug}`,
-      });
-    }
-  }
-
-  return [...paramsMap.values()];
+  return [];
 }
 
 type PageProps = { params: Promise<{ slug: string; destRoute: string }> };
