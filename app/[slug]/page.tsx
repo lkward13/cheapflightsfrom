@@ -33,8 +33,10 @@ function extractMetroSlug(slug: string): string | null {
   return slug.slice(PREFIX.length);
 }
 
+// Don't pre-generate all hub pages at build time to avoid DB connection limits.
+// Pages are generated on first visit and cached via ISR (revalidate above).
 export async function generateStaticParams() {
-  return METROS.map((metro) => ({ slug: `${PREFIX}${metro.slug}` }));
+  return [];
 }
 
 type PageProps = { params: Promise<{ slug: string }> };
