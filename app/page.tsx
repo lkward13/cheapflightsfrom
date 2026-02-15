@@ -36,7 +36,8 @@ export default function Home() {
       <section className="bg-brand-dark text-white py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            Pay Less. <span className="text-brand-sky">Travel More.</span>
+            <span className="text-brand-gold">Pay Less.</span>{" "}
+            <span className="text-white">Travel More.</span>
           </h1>
           <p className="text-xl text-white/80 mb-6">
             Flight Deals From Your City To Your Favorite Destination

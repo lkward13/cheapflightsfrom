@@ -17,11 +17,11 @@ export default function MegaMenu({ mobile = false, onClose }: MegaMenuProps) {
   if (mobile) {
     return (
       <div className="space-y-1">
-        <p className="text-xs uppercase tracking-wider text-white/50 py-1">Browse by Region</p>
+        <p className="text-xs uppercase tracking-wider text-gray-400 py-1">Browse by Region</p>
         {REGIONS.map((region) => (
           <div key={region}>
             <button
-              className="w-full text-left py-2 flex items-center justify-between hover:text-brand-sky"
+              className="w-full text-left py-2 flex items-center justify-between text-brand-dark hover:text-brand-primary"
               onClick={() => setOpenRegion(openRegion === region ? null : region)}
             >
               <span>{REGION_LABELS[region]}</span>
@@ -40,7 +40,7 @@ export default function MegaMenu({ mobile = false, onClose }: MegaMenuProps) {
                   <Link
                     key={metro.slug}
                     href={`/cheap-flights-from-${metro.slug}`}
-                    className="text-sm py-1 text-white/80 hover:text-brand-sky"
+                    className="text-sm py-1 text-gray-600 hover:text-brand-primary"
                     onClick={onClose}
                   >
                     {metro.displayName}
