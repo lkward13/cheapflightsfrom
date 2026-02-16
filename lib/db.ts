@@ -6,8 +6,8 @@ export function getPool(): Pool {
   if (!pool) {
     const config: ConstructorParameters<typeof Pool>[0] = {
       connectionString: process.env.DATABASE_URL,
-      max: 5,
-      idleTimeoutMillis: 30000,
+      max: 1,
+      idleTimeoutMillis: 10000,
       connectionTimeoutMillis: 10000,
     };
 

@@ -170,19 +170,29 @@ export async function getRouteInsights(
 
 /** Get recent price points for price trend */
 export async function getRoutePriceTrend(
-  origin: string,
+  origins: string[],
   destination: string
 ): Promise<PriceTrendPoint[]> {
   return query<PriceTrendPoint>(
-    `SELECT 
-      MIN(price) as min_price,
+    `SELECT
+      MIN(min_price) as min_price,
       scraped_date::text as scraped_date
-    FROM matrix_prices
-    WHERE origin = $1 AND destination = $2
-      AND scraped_date > NOW() - INTERVAL '30 days'
+    FROM (
+      SELECT MIN(price) as min_price, scraped_date
+      FROM matrix_prices
+      WHERE origin = ANY($1) AND destination = $2
+        AND scraped_date > NOW() - INTERVAL '90 days'
+      GROUP BY scraped_date
+      UNION ALL
+      SELECT MIN(price) as min_price, scraped_date
+      FROM explorer_prices
+      WHERE origin = ANY($1) AND destination = $2
+        AND scraped_date > NOW() - INTERVAL '90 days'
+      GROUP BY scraped_date
+    ) combined
     GROUP BY scraped_date
     ORDER BY scraped_date ASC`,
-    [origin, destination]
+    [origins, destination]
   );
 }
 

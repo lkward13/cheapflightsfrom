@@ -73,7 +73,7 @@ export default async function RoutePage({ params }: PageProps) {
   if (!insights) notFound();
 
   const [priceTrend, otherDests] = await Promise.all([
-    getRoutePriceTrend(insights.origin.trim(), destIata),
+    getRoutePriceTrend(metro.airports, destIata),
     getDestinationsForOrigins(metro.airports),
   ]);
 
