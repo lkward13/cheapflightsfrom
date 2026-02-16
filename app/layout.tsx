@@ -17,10 +17,32 @@ export const metadata: Metadata = {
   description:
     "Find cheap flights from your city. We track prices on thousands of routes daily and alert you when fares drop. Save more, search less.",
   metadataBase: new URL("https://cheapflightsfrom.us"),
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "CheapFlightsFrom.us",
+    title: "Pay Less. Travel More.",
+    description:
+      "Flight deals from your city. We track thousands of routes daily and alert you when fares drop.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "CheapFlightsFrom.us - Pay Less. Travel More.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pay Less. Travel More.",
+    description:
+      "Flight deals from your city. We track thousands of routes daily and alert you when fares drop.",
+    images: ["/og-image.jpg"],
   },
 };
 
