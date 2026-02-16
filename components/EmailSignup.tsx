@@ -55,16 +55,16 @@ export default function EmailSignup({ darkBg = false, defaultOrigin }: EmailSign
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 max-w-lg mx-auto">
-      <p className={`text-sm mb-3 font-medium drop-shadow ${darkBg ? "text-white/80" : "text-gray-600"}`}>
+    <form onSubmit={handleSubmit} className="mt-8 lg:mt-10 max-w-2xl mx-auto">
+      <p className={`text-base lg:text-lg mb-4 font-medium drop-shadow ${darkBg ? "text-white/80" : "text-gray-600"}`}>
         Never miss a flight deal. Get free alerts from your city.
       </p>
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-col sm:flex-row gap-3">
         <select
           required
           value={origin}
           onChange={(e) => setOrigin(e.target.value)}
-          className="px-4 py-3 rounded-lg text-gray-900 bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg sm:w-44 appearance-none"
+          className="px-4 py-3.5 lg:py-4 rounded-lg text-gray-900 bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg sm:w-48 lg:w-52 appearance-none text-base"
         >
           <option value="" disabled>
             Your city
@@ -81,12 +81,12 @@ export default function EmailSignup({ darkBg = false, defaultOrigin }: EmailSign
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
-          className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-400 bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg"
+          className="flex-1 px-4 py-3.5 lg:py-4 rounded-lg text-gray-900 placeholder-gray-400 bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg text-base"
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="px-6 py-3 bg-brand-gold text-brand-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors shadow-lg disabled:opacity-60 whitespace-nowrap"
+          className="px-8 py-3.5 lg:py-4 bg-brand-gold text-brand-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors shadow-lg disabled:opacity-60 whitespace-nowrap text-base lg:text-lg"
         >
           {status === "loading" ? "..." : "Sign Up"}
         </button>

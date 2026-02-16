@@ -40,19 +40,19 @@ export default function Home() {
     <>
       {/* Hero */}
       <section
-        className="relative text-white py-24 sm:py-32 px-4 bg-cover bg-center bg-no-repeat"
+        className="relative text-white py-28 sm:py-36 lg:py-44 px-4 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/hero.jpg')" }}
       >
         <div className="absolute inset-0 bg-brand-dark/50" />
-        <div className="relative max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4 drop-shadow-lg">
+        <div className="relative max-w-5xl mx-auto text-center">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg">
             <span className="text-brand-gold">Pay Less.</span>{" "}
             <span className="text-white">Travel More.</span>
           </h1>
-          <p className="text-xl text-white/90 mb-6 drop-shadow">
+          <p className="text-xl sm:text-2xl text-white/90 mb-4 drop-shadow">
             Flight Deals From Your City To Your Favorite Destination
           </p>
-          <p className="text-lg text-white/70 max-w-2xl mx-auto drop-shadow">
+          <p className="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto drop-shadow">
             We track prices on thousands of routes daily and alert you when fares drop.
             Save more and search less.
           </p>
@@ -61,37 +61,37 @@ export default function Home() {
       </section>
 
       {/* Quote */}
-      <section className="bg-brand-primary py-6 text-center">
-        <p className="text-white/90 italic text-lg max-w-2xl mx-auto px-4">
+      <section className="bg-brand-primary py-8 text-center">
+        <p className="text-white/90 italic text-lg sm:text-xl max-w-3xl mx-auto px-4">
           &ldquo;Whether you think you can, or whether you think you can&apos;t, you&apos;re right.&rdquo;
         </p>
       </section>
 
       {/* Browse by City */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+        <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-3">
           Browse Cheap Flights By City
         </h2>
-        <p className="text-center text-gray-500 mb-10">
+        <p className="text-center text-gray-500 text-lg mb-12">
           Choose your departure city to see the best deals and price trends
         </p>
 
         {REGIONS.map((region) => (
-          <div key={region} className="mb-10">
-            <h3 className="text-lg font-bold text-brand-primary mb-3 uppercase tracking-wider">
+          <div key={region} className="mb-12">
+            <h3 className="text-lg font-bold text-brand-primary mb-4 uppercase tracking-wider">
               {REGION_LABELS[region]}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4">
               {METROS_BY_REGION[region].map((metro) => (
                 <Link
                   key={metro.slug}
                   href={`/cheap-flights-from-${metro.slug}`}
-                  className="bg-white border border-gray-200 rounded-lg px-4 py-3 hover:border-brand-primary hover:shadow-md transition-all group"
+                  className="bg-white border border-gray-200 rounded-lg px-4 py-4 lg:px-5 lg:py-5 hover:border-brand-primary hover:shadow-md transition-all group"
                 >
-                  <span className="font-medium text-gray-800 group-hover:text-brand-primary transition-colors">
+                  <span className="font-medium text-gray-800 group-hover:text-brand-primary transition-colors lg:text-lg">
                     {metro.displayName}
                   </span>
-                  <span className="text-xs text-gray-400 block mt-0.5">
+                  <span className="text-xs lg:text-sm text-gray-400 block mt-1">
                     {metro.airports.join(", ")}
                   </span>
                 </Link>
@@ -102,12 +102,12 @@ export default function Home() {
       </section>
 
       {/* Tips */}
-      <section className="bg-gray-50 py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
+      <section className="bg-gray-50 py-16 lg:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-10">
             Top Tips For Finding Cheap Flights
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-4 lg:space-y-5">
             {[
               {
                 title: "Book 3-8 weeks out for the sweet spot",
@@ -142,13 +142,13 @@ export default function Home() {
                 body: "The best deals sell out in 24-72 hours. Sign up for our free email alerts and we'll notify you the moment fares drop on your routes -- no need to check every day.",
               },
             ].map((tip, i) => (
-              <div key={i} className="flex gap-3 bg-white rounded-lg p-4 shadow-sm">
-                <span className="text-brand-primary font-bold text-lg shrink-0">
+              <div key={i} className="flex gap-4 bg-white rounded-xl p-5 lg:p-6 shadow-sm">
+                <span className="text-brand-primary font-bold text-xl shrink-0">
                   {i + 1}.
                 </span>
                 <div>
-                  <p className="font-semibold text-gray-900">{tip.title}</p>
-                  <p className="text-gray-600 mt-1">{tip.body}</p>
+                  <p className="font-semibold text-gray-900 text-lg">{tip.title}</p>
+                  <p className="text-gray-600 mt-1 lg:text-lg leading-relaxed">{tip.body}</p>
                 </div>
               </div>
             ))}
@@ -157,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
         <FAQSection items={FAQ_ITEMS} title="People Also Ask" />
       </section>
     </>
