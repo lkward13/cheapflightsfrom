@@ -22,6 +22,7 @@ import CheapestNow from "@/components/CheapestNow";
 import RegionTabs from "@/components/RegionTabs";
 import type { RegionDestRow } from "@/components/RegionTabs";
 import FAQSection from "@/components/FAQSection";
+import EmailSignup from "@/components/EmailSignup";
 import BreadCrumb from "@/components/BreadCrumb";
 
 export const revalidate = 14400; // ISR: 4 hours
@@ -308,6 +309,14 @@ export default async function HubPage({ params }: PageProps) {
           </div>
         </section>
       )}
+
+      {/* Email signup */}
+      <section className="bg-brand-dark rounded-xl p-8 text-center my-8">
+        <h2 className="text-2xl font-bold text-white mb-1">
+          Get Deal Alerts From {metro.displayName}
+        </h2>
+        <EmailSignup darkBg defaultOrigin={metro.slug} />
+      </section>
 
       <FAQSection items={faqItems} />
     </div>

@@ -1,26 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import { METROS } from "@/lib/metro-data";
+
+const SORTED_METROS = [...METROS].sort((a, b) =>
+  a.displayName.localeCompare(b.displayName)
+);
 
 interface EmailSignupProps {
   darkBg?: boolean;
+  defaultOrigin?: string;
 }
 
-export default function EmailSignup({ darkBg = false }: EmailSignupProps) {
+export default function EmailSignup({ darkBg = false, defaultOrigin }: EmailSignupProps) {
   const [email, setEmail] = useState("");
+  const [origin, setOrigin] = useState(defaultOrigin || "");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email) return;
+    if (!email || !origin) return;
 
     setStatus("loading");
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, origin }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -48,11 +55,26 @@ export default function EmailSignup({ darkBg = false }: EmailSignupProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="mt-8 max-w-lg mx-auto">
       <p className={`text-sm mb-3 font-medium drop-shadow ${darkBg ? "text-white/80" : "text-gray-600"}`}>
-        Never miss a flight deal. Get free alerts in your inbox.
+        Never miss a flight deal. Get free alerts from your city.
       </p>
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
+        <select
+          required
+          value={origin}
+          onChange={(e) => setOrigin(e.target.value)}
+          className="px-4 py-3 rounded-lg text-gray-900 bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg sm:w-44 appearance-none"
+        >
+          <option value="" disabled>
+            Your city
+          </option>
+          {SORTED_METROS.map((metro) => (
+            <option key={metro.slug} value={metro.slug}>
+              {metro.displayName}
+            </option>
+          ))}
+        </select>
         <input
           type="email"
           required
@@ -64,7 +86,7 @@ export default function EmailSignup({ darkBg = false }: EmailSignupProps) {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="px-6 py-3 bg-brand-gold text-brand-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors shadow-lg disabled:opacity-60"
+          className="px-6 py-3 bg-brand-gold text-brand-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors shadow-lg disabled:opacity-60 whitespace-nowrap"
         >
           {status === "loading" ? "..." : "Sign Up"}
         </button>

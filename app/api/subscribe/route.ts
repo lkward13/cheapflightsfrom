@@ -3,7 +3,7 @@ import { query } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json();
+    const { email, origin } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json(
@@ -12,8 +12,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const trimmed = email.trim().toLowerCase();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+    if (!origin || typeof origin !== "string") {
+      return NextResponse.json(
+        { error: "Please select your city" },
+        { status: 400 }
+      );
+    }
+
+    const trimmedEmail = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       return NextResponse.json(
         { error: "Invalid email address" },
         { status: 400 }
@@ -21,10 +28,10 @@ export async function POST(request: NextRequest) {
     }
 
     await query(
-      `INSERT INTO subscribers (email)
-       VALUES ($1)
-       ON CONFLICT (email) DO NOTHING`,
-      [trimmed]
+      `INSERT INTO subscribers (email, origin)
+       VALUES ($1, $2)
+       ON CONFLICT (email) DO UPDATE SET origin = $2`,
+      [trimmedEmail, origin.trim()]
     );
 
     return NextResponse.json({ success: true });
@@ -32,7 +39,6 @@ export async function POST(request: NextRequest) {
     const msg =
       error instanceof Error ? error.message : "Unknown error";
 
-    // If table doesn't exist yet, still return success to the user
     if (msg.includes("subscribers") && msg.includes("does not exist")) {
       console.error("subscribers table not created yet:", msg);
       return NextResponse.json({ success: true });
