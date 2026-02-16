@@ -26,7 +26,7 @@ import FAQSection from "@/components/FAQSection";
 import EmailSignup from "@/components/EmailSignup";
 import BreadCrumb from "@/components/BreadCrumb";
 
-export const revalidate = 14400; // ISR: 4 hours
+export const revalidate = 21600; // ISR: 6 hours (slightly longer hub cache)
 
 const PREFIX = "cheap-flights-from-";
 
