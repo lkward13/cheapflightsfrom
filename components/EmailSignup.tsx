@@ -60,31 +60,21 @@ export default function EmailSignup({ darkBg = false, defaultOrigin }: EmailSign
         Never miss a flight deal. Get free alerts from your city.
       </p>
       <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative sm:w-48 lg:w-52">
-          <select
-            required
-            value={origin}
-            onChange={(e) => setOrigin(e.target.value)}
-            className={`w-full px-4 py-3.5 lg:py-4 pr-10 rounded-lg bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg text-base cursor-pointer ${origin ? "text-gray-900" : "text-gray-400"}`}
-          >
-            <option value="" disabled>
-              Select your city
+        <select
+          required
+          value={origin}
+          onChange={(e) => setOrigin(e.target.value)}
+          className={`px-4 py-3.5 lg:py-4 rounded-lg bg-white border-0 focus:ring-2 focus:ring-brand-gold outline-none shadow-lg sm:w-48 lg:w-52 text-base cursor-pointer ${origin ? "text-gray-900" : "text-gray-400"}`}
+        >
+          <option value="" disabled>
+            Select your city
+          </option>
+          {SORTED_METROS.map((metro) => (
+            <option key={metro.slug} value={metro.slug} className="text-gray-900">
+              {metro.displayName}
             </option>
-            {SORTED_METROS.map((metro) => (
-              <option key={metro.slug} value={metro.slug} className="text-gray-900">
-                {metro.displayName}
-              </option>
-            ))}
-          </select>
-          <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+          ))}
+        </select>
         <input
           type="email"
           required

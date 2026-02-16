@@ -49,10 +49,10 @@ export default function Home() {
             <span className="text-brand-gold">Pay Less.</span>{" "}
             <span className="text-white">Travel More.</span>
           </h1>
-          <p className="text-xl sm:text-2xl text-white/90 mb-4 drop-shadow">
+          <p className="text-xl sm:text-2xl lg:text-3xl text-white font-semibold mb-4 drop-shadow-lg">
             Flight Deals From Your City To Your Favorite Destination
           </p>
-          <p className="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto drop-shadow">
+          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-lg">
             We track prices on thousands of routes daily and alert you when fares drop.
             Save more and search less.
           </p>
