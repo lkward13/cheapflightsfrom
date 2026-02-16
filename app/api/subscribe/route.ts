@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { METRO_BY_SLUG } from "@/lib/metro-data";
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,23 +28,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const metro = METRO_BY_SLUG[origin.trim()];
+    if (!metro) {
+      return NextResponse.json(
+        { error: "Invalid city selection" },
+        { status: 400 }
+      );
+    }
+
+    const homeAirports = metro.airports.join(",");
+
     await query(
-      `INSERT INTO subscribers (email, origin)
-       VALUES ($1, $2)
-       ON CONFLICT (email) DO UPDATE SET origin = $2`,
-      [trimmedEmail, origin.trim()]
+      `INSERT INTO subscribers (email, home_metro, home_airports, assignment_source)
+       VALUES ($1, $2, $3, 'website')
+       ON CONFLICT (email) DO UPDATE
+         SET home_metro = $2,
+             home_airports = $3,
+             updated_at = NOW()`,
+      [trimmedEmail, metro.slug, homeAirports]
     );
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     const msg =
       error instanceof Error ? error.message : "Unknown error";
-
-    if (msg.includes("subscribers") && msg.includes("does not exist")) {
-      console.error("subscribers table not created yet:", msg);
-      return NextResponse.json({ success: true });
-    }
-
     console.error("Subscribe error:", msg);
     return NextResponse.json(
       { error: "Something went wrong" },
