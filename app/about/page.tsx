@@ -45,8 +45,8 @@ export default function AboutPage() {
         <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-3">Get In Touch</h2>
         <p>
           Have a question or suggestion? We&apos;d love to hear from you. Drop us a line at{" "}
-          <a href="mailto:lkward13@gmail.com" className="text-brand-primary hover:underline">
-            lkward13@gmail.com
+          <a href="mailto:info@cheapflightsfrom.us" className="text-brand-primary hover:underline">
+            info@cheapflightsfrom.us
           </a>.
         </p>
       </div>

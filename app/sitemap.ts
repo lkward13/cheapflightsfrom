@@ -3,6 +3,8 @@ import { METROS, AIRPORT_TO_METRO } from "@/lib/metro-data";
 import { getDestSlug } from "@/lib/city-mapping";
 import { getAllQualifyingRoutes } from "@/lib/queries";
 
+export const revalidate = 86400; // Cache sitemap for 24 hours
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://cheapflightsfrom.us";
   const now = new Date();

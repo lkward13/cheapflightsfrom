@@ -22,8 +22,8 @@ export default function ContactPage() {
             </svg>
             <div>
               <h3 className="font-semibold text-gray-900">Email</h3>
-              <a href="mailto:lkward13@gmail.com" className="text-brand-primary hover:underline">
-                lkward13@gmail.com
+              <a href="mailto:info@cheapflightsfrom.us" className="text-brand-primary hover:underline">
+                info@cheapflightsfrom.us
               </a>
             </div>
           </div>

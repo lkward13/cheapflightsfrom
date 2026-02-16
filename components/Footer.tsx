@@ -13,8 +13,8 @@ export default function Footer() {
               Save more, search less.
             </p>
             <p className="text-sm mt-3">
-              <a href="mailto:lkward13@gmail.com" className="hover:text-white transition-colors">
-                lkward13@gmail.com
+              <a href="mailto:info@cheapflightsfrom.us" className="hover:text-white transition-colors">
+                info@cheapflightsfrom.us
               </a>
             </p>
           </div>

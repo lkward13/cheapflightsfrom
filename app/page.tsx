@@ -78,7 +78,8 @@ export default function Home() {
 
         {REGIONS.map((region) => (
           <div key={region} className="mb-12">
-            <h3 className="text-lg font-bold text-brand-primary mb-4 uppercase tracking-wider">
+            <h3 className="text-lg font-bold text-brand-primary mb-5 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-8 h-0.5 bg-brand-primary rounded-full" />
               {REGION_LABELS[region]}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4">
@@ -86,14 +87,22 @@ export default function Home() {
                 <Link
                   key={metro.slug}
                   href={`/cheap-flights-from-${metro.slug}`}
-                  className="bg-white border border-gray-200 rounded-lg px-4 py-4 lg:px-5 lg:py-5 hover:border-brand-primary hover:shadow-md transition-all group"
+                  className="relative bg-white border border-gray-200 rounded-xl px-5 py-4 lg:px-6 lg:py-5 hover:border-brand-primary/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden"
                 >
-                  <span className="font-medium text-gray-800 group-hover:text-brand-primary transition-colors lg:text-lg">
-                    {metro.displayName}
-                  </span>
-                  <span className="text-xs lg:text-sm text-gray-400 block mt-1">
-                    {metro.airports.join(", ")}
-                  </span>
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary to-brand-gold rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <span className="font-semibold text-gray-800 group-hover:text-brand-primary transition-colors lg:text-lg block">
+                        {metro.displayName}
+                      </span>
+                      <span className="text-xs lg:text-sm text-gray-400 mt-1 block">
+                        {metro.airports.join(", ")}
+                      </span>
+                    </div>
+                    <svg className="w-4 h-4 text-gray-300 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </Link>
               ))}
             </div>
