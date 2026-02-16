@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { METROS_BY_REGION, REGION_LABELS, type Region } from "@/lib/metro-data";
 import FAQSection from "@/components/FAQSection";
+import EmailSignup from "@/components/EmailSignup";
 
 export const revalidate = 14400; // 4 hours
 
@@ -55,6 +56,7 @@ export default function Home() {
             We track prices on thousands of routes daily and alert you when fares drop.
             Save more and search less.
           </p>
+          <EmailSignup darkBg />
         </div>
       </section>
 

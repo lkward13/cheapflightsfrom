@@ -31,7 +31,7 @@ export default function Header() {
                 className="h-8 w-auto"
                 priority
               />
-              <span className="hidden sm:inline font-bold text-brand-dark text-lg">
+              <span className="hidden sm:inline font-bold text-brand-primary text-lg">
                 Cheap Flights From
               </span>
             </Link>
