@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const WARM_PATHS = [
   "/",
@@ -51,30 +52,44 @@ export async function GET(request: NextRequest) {
   const baseUrl = getBaseUrl(request);
   const startedAt = Date.now();
   const results: Array<{ path: string; status?: number; ok: boolean; ms: number }> = [];
+  const queue = [...WARM_PATHS];
+  const workers = Array.from({ length: 3 }, async () => {
+    while (queue.length > 0) {
+      const path = queue.shift();
+      if (!path) break;
+      const pathStartedAt = Date.now();
 
-  for (const path of WARM_PATHS) {
-    const pathStartedAt = Date.now();
-    try {
-      const response = await fetch(`${baseUrl}${path}`, {
-        cache: "no-store",
-        headers: {
-          "user-agent": "cheapflightsfrom-cache-warmer/1.0",
-        },
-      });
-      results.push({
-        path,
-        status: response.status,
-        ok: response.ok,
-        ms: Date.now() - pathStartedAt,
-      });
-    } catch {
-      results.push({
-        path,
-        ok: false,
-        ms: Date.now() - pathStartedAt,
-      });
+      // Keep each warm fetch bounded so the cron run doesn't hang.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+
+      try {
+        const response = await fetch(`${baseUrl}${path}`, {
+          cache: "no-store",
+          signal: controller.signal,
+          headers: {
+            "user-agent": "cheapflightsfrom-cache-warmer/1.0",
+          },
+        });
+        results.push({
+          path,
+          status: response.status,
+          ok: response.ok,
+          ms: Date.now() - pathStartedAt,
+        });
+      } catch {
+        results.push({
+          path,
+          ok: false,
+          ms: Date.now() - pathStartedAt,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
     }
-  }
+  });
+
+  await Promise.all(workers);
 
   const successCount = results.filter((result) => result.ok).length;
   return NextResponse.json({
