@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { METROS, METRO_BY_SLUG, isDomestic } from "@/lib/metro-data";
+import { cache } from "react";
+import { METRO_BY_SLUG, isDomestic } from "@/lib/metro-data";
 import { getCityName } from "@/lib/city-mapping";
 import {
   getHubDestinations,
@@ -42,24 +43,47 @@ export async function generateStaticParams() {
 
 type PageProps = { params: Promise<{ slug: string }> };
 
+const getHubCoreData = cache(async (metroSlug: string) => {
+  const metro = METRO_BY_SLUG[metroSlug];
+  if (!metro) return null;
+
+  const [destinations, destCount] = await Promise.all([
+    getHubDestinations(metro.airports),
+    getDestinationCount(metro.airports),
+  ]);
+
+  return { metro, destinations, destCount };
+});
+
+const getHubSupplementalData = cache(async (metroSlug: string) => {
+  const metro = METRO_BY_SLUG[metroSlug];
+  if (!metro) return null;
+
+  const [recentDeals, cheapestNow, allDestinations] = await Promise.all([
+    getRecentDeals(metro.airports),
+    getCheapestFlightsNow(metro.airports, 30),
+    getAllHubDestinations(metro.airports),
+  ]);
+
+  return { recentDeals, cheapestNow, allDestinations };
+});
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const metroSlug = extractMetroSlug(slug);
   if (!metroSlug) return {};
 
-  const metro = METRO_BY_SLUG[metroSlug];
-  if (!metro) return {};
+  const core = await getHubCoreData(metroSlug);
+  if (!core) return {};
 
-  const destinations = await getHubDestinations(metro.airports);
-  const cheapest = destinations[0]?.low_price_threshold;
-  const destCount = await getDestinationCount(metro.airports);
-  const codes = metro.airports.join(", ");
+  const cheapest = core.destinations[0]?.low_price_threshold;
+  const codes = core.metro.airports.join(", ");
 
   return {
-    title: `Cheap Flights From ${metro.displayName} - Deals from ${formatPrice(cheapest)}`,
-    description: `Find cheap flights from ${metro.displayName} (${codes}). Fares as low as ${formatPrice(cheapest)}. We track ${destCount} destinations daily and alert you when prices drop.`,
+    title: `Cheap Flights From ${core.metro.displayName} - Deals from ${formatPrice(cheapest)}`,
+    description: `Find cheap flights from ${core.metro.displayName} (${codes}). Fares as low as ${formatPrice(cheapest)}. We track ${core.destCount} destinations daily and alert you when prices drop.`,
     openGraph: {
-      title: `Cheap Flights From ${metro.displayName}`,
+      title: `Cheap Flights From ${core.metro.displayName}`,
       description: `Deals starting at ${formatPrice(cheapest)} from ${codes}`,
     },
   };
@@ -137,17 +161,12 @@ export default async function HubPage({ params }: PageProps) {
   const metroSlug = extractMetroSlug(slug);
   if (!metroSlug) notFound();
 
-  const metro = METRO_BY_SLUG[metroSlug];
-  if (!metro) notFound();
+  const core = await getHubCoreData(metroSlug);
+  const supplemental = await getHubSupplementalData(metroSlug);
+  if (!core || !supplemental) notFound();
 
-  const [destinations, destCount, recentDeals, cheapestNow, allDestinations] =
-    await Promise.all([
-      getHubDestinations(metro.airports),
-      getDestinationCount(metro.airports),
-      getRecentDeals(metro.airports),
-      getCheapestFlightsNow(metro.airports, 30),
-      getAllHubDestinations(metro.airports),
-    ]);
+  const { metro, destinations, destCount } = core;
+  const { recentDeals, cheapestNow, allDestinations } = supplemental;
 
   const dedupedAll = deduplicateByDestination(destinations);
   const deduped = mixDomesticInternational(dedupedAll);

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { METROS_BY_REGION, REGION_LABELS, type Region } from "@/lib/metro-data";
 import FAQSection from "@/components/FAQSection";
 import EmailSignup from "@/components/EmailSignup";
@@ -39,10 +40,15 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section
-        className="relative text-white py-28 sm:py-36 lg:py-44 px-4 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/hero.jpg')" }}
-      >
+      <section className="relative text-white py-28 sm:py-36 lg:py-44 px-4 overflow-hidden">
+        <Image
+          src="/hero.jpg"
+          alt="Scenic travel destination"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-brand-dark/50" />
         <div className="relative max-w-5xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg">

@@ -39,11 +39,6 @@ export default function PriceTrend({ data }: PriceTrendProps) {
     Math.round(minPrice + (range * i) / yTicks)
   );
 
-  const dateLabels = [
-    data[0],
-    data[Math.floor(data.length / 2)],
-    data[data.length - 1],
-  ];
   const dateLabelIndices = [0, Math.floor(data.length / 2), data.length - 1];
 
   return (

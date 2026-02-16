@@ -46,9 +46,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const seen = new Set<string>();
 
     for (const route of routes) {
-      const metro = AIRPORT_TO_METRO[route.origin.trim()];
+      const routeOrigin = route.origin.trim().toUpperCase();
+      const routeDestination = route.destination.trim().toUpperCase();
+      const metro = AIRPORT_TO_METRO[routeOrigin];
       if (!metro) continue;
-      const dSlug = getDestSlug(route.destination.trim());
+      const dSlug = getDestSlug(routeDestination);
       const key = `${metro.slug}|${dSlug}`;
       if (seen.has(key)) continue;
       seen.add(key);

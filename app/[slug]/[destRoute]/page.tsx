@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { cache } from "react";
 import { METRO_BY_SLUG } from "@/lib/metro-data";
 import { getCityName, getDestSlug, findIataFromSlug } from "@/lib/city-mapping";
 import {
@@ -14,7 +15,7 @@ import MonthlyCalendar from "@/components/MonthlyCalendar";
 import PriceTrend from "@/components/PriceTrend";
 import BreadCrumb from "@/components/BreadCrumb";
 
-export const revalidate = 14400; // ISR: 4 hours
+export const revalidate = 43200; // ISR: 12 hours for deep route pages
 export const dynamicParams = true; // Allow on-demand generation
 
 const HUB_PREFIX = "cheap-flights-from-";
@@ -36,41 +37,46 @@ export async function generateStaticParams() {
 
 type PageProps = { params: Promise<{ slug: string; destRoute: string }> };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug, destRoute } = await params;
+const getRouteCoreData = cache(async (slug: string, destRoute: string) => {
   const parsed = parseParams(slug, destRoute);
-  if (!parsed) return {};
+  if (!parsed) return null;
 
   const metro = METRO_BY_SLUG[parsed.metroSlug];
-  if (!metro) return {};
+  if (!metro) return null;
 
   const destIata = findIataFromSlug(parsed.destSlug);
-  if (!destIata) return {};
+  if (!destIata) return null;
 
-  const destCity = getCityName(destIata);
   const insights = await getRouteInsights(metro.airports, destIata);
-  const cheapMonths = getCheapestMonths(insights?.monthly_typical || null, 3);
+  if (!insights) return null;
 
   return {
-    title: `${metro.displayName} to ${destCity} Flights - From ${formatPrice(insights?.low_price_threshold)}`,
-    description: `${metro.displayName} to ${destCity} flights typically cost ${formatPrice(insights?.typical_price)}. We've seen fares as low as ${formatPrice(insights?.min_price_ever)}. Best months: ${cheapMonths.join(", ") || "varies"}.`,
+    metro,
+    destIata,
+    destCity: getCityName(destIata),
+    insights,
+  };
+});
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug, destRoute } = await params;
+  const routeCore = await getRouteCoreData(slug, destRoute);
+  if (!routeCore) return {};
+
+  const cheapMonths = getCheapestMonths(routeCore.insights.monthly_typical || null, 3);
+
+  return {
+    title: `${routeCore.metro.displayName} to ${routeCore.destCity} Flights - From ${formatPrice(routeCore.insights?.low_price_threshold)}`,
+    description: `${routeCore.metro.displayName} to ${routeCore.destCity} flights typically cost ${formatPrice(routeCore.insights?.typical_price)}. We've seen fares as low as ${formatPrice(routeCore.insights?.min_price_ever)}. Best months: ${cheapMonths.join(", ") || "varies"}.`,
   };
 }
 
 export default async function RoutePage({ params }: PageProps) {
   const { slug, destRoute } = await params;
-  const parsed = parseParams(slug, destRoute);
-  if (!parsed) notFound();
+  const routeCore = await getRouteCoreData(slug, destRoute);
+  if (!routeCore) notFound();
 
-  const metro = METRO_BY_SLUG[parsed.metroSlug];
-  if (!metro) notFound();
-
-  const destIata = findIataFromSlug(parsed.destSlug);
-  if (!destIata) notFound();
-
-  const destCity = getCityName(destIata);
-  const insights = await getRouteInsights(metro.airports, destIata);
-  if (!insights) notFound();
+  const { metro, destIata, destCity, insights } = routeCore;
 
   const [priceTrend, otherDests] = await Promise.all([
     getRoutePriceTrend(metro.airports, destIata),
