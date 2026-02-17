@@ -128,20 +128,34 @@ export async function getDestinationCount(airportCodes: string[]): Promise<numbe
 }
 
 /** Get recent deals sent from a metro's airports */
+const getRecentDealsCached = unstable_cache(
+  async (
+    airportCodes: string[],
+    limit: number
+  ): Promise<SentDeal[]> => {
+    return query<SentDeal>(
+      `SELECT origin, destination, price, outbound_date, return_date, sent_at
+       FROM sent_deals
+       WHERE origin = ANY($1)
+         AND sent_at > NOW() - INTERVAL '30 days'
+       ORDER BY sent_at DESC
+       LIMIT $2`,
+      [airportCodes, limit],
+      { name: "getRecentDeals" }
+    );
+  },
+  ["recent-deals-v1"],
+  {
+    revalidate: 60 * 60,
+    tags: ["sent-deals"],
+  }
+);
+
 export async function getRecentDeals(
   airportCodes: string[],
   limit = 10
 ): Promise<SentDeal[]> {
-  return query<SentDeal>(
-    `SELECT origin, destination, price, outbound_date, return_date, sent_at
-     FROM sent_deals
-     WHERE origin = ANY($1)
-       AND sent_at > NOW() - INTERVAL '30 days'
-     ORDER BY sent_at DESC
-     LIMIT $2`,
-    [normalizeCodes(airportCodes), limit],
-    { name: "getRecentDeals" }
-  );
+  return getRecentDealsCached(normalizeCodes(airportCodes), limit);
 }
 
 // ---- Cheapest Flights Now (matrix_prices) ----
@@ -154,25 +168,39 @@ export interface CheapestNow {
 }
 
 /** Get cheapest current flights from matrix_prices (last 3 days) */
+const getCheapestFlightsNowCached = unstable_cache(
+  async (
+    airportCodes: string[],
+    limit: number
+  ): Promise<CheapestNow[]> => {
+    return query<CheapestNow>(
+      `SELECT
+        origin,
+        destination,
+        MIN(price) as price,
+        MAX(scraped_date::text) as scraped_date
+      FROM matrix_prices
+      WHERE origin = ANY($1)
+        AND scraped_date > NOW() - INTERVAL '3 days'
+      GROUP BY origin, destination
+      ORDER BY MIN(price) ASC
+      LIMIT $2`,
+      [airportCodes, limit],
+      { name: "getCheapestFlightsNow" }
+    );
+  },
+  ["cheapest-flights-now-v1"],
+  {
+    revalidate: 60 * 60,
+    tags: ["matrix-prices"],
+  }
+);
+
 export async function getCheapestFlightsNow(
   airportCodes: string[],
   limit = 20
 ): Promise<CheapestNow[]> {
-  return query<CheapestNow>(
-    `SELECT
-      origin,
-      destination,
-      MIN(price) as price,
-      MAX(scraped_date::text) as scraped_date
-    FROM matrix_prices
-    WHERE origin = ANY($1)
-      AND scraped_date > NOW() - INTERVAL '3 days'
-    GROUP BY origin, destination
-    ORDER BY MIN(price) ASC
-    LIMIT $2`,
-    [normalizeCodes(airportCodes), limit],
-    { name: "getCheapestFlightsNow" }
-  );
+  return getCheapestFlightsNowCached(normalizeCodes(airportCodes), limit);
 }
 
 // ---- All Destinations by Region (route_insights) ----

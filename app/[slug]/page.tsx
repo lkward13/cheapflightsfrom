@@ -62,7 +62,7 @@ const getHubSupplementalData = cache(async (metroSlug: string) => {
   const [recentDeals, cheapestNow, allDestinations] = await Promise.all([
     getRecentDeals(metro.airports),
     getCheapestFlightsNow(metro.airports, 30),
-    getAllHubDestinations(metro.airports),
+    getAllHubDestinations(metro.airports, 300),
   ]);
 
   return { recentDeals, cheapestNow, allDestinations };
