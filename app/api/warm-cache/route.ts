@@ -38,7 +38,8 @@ function getBaseUrl(request: NextRequest): string {
 
 function isAuthorized(request: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;
-  if (!secret) return true;
+  // Fail closed: if no secret is configured, disable public warming access.
+  if (!secret) return false;
 
   const authHeader = request.headers.get("authorization") || "";
   return authHeader === `Bearer ${secret}`;
