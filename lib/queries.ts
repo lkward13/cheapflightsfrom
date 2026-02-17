@@ -167,7 +167,7 @@ export interface CheapestNow {
   scraped_date: string;
 }
 
-/** Get cheapest current flights from matrix_prices (last 3 days) */
+/** Get cheapest current flights from indexed route_insights */
 const getCheapestFlightsNowCached = unstable_cache(
   async (
     airportCodes: string[],
@@ -177,13 +177,14 @@ const getCheapestFlightsNowCached = unstable_cache(
       `SELECT
         origin,
         destination,
-        MIN(price) as price,
-        MAX(scraped_date::text) as scraped_date
-      FROM matrix_prices
+        low_price_threshold as price,
+        COALESCE(last_scraped::text, NOW()::text) as scraped_date
+      FROM route_insights
       WHERE origin = ANY($1)
-        AND scraped_date > NOW() - INTERVAL '3 days'
-      GROUP BY origin, destination
-      ORDER BY MIN(price) ASC
+        AND data_quality IN ('high', 'medium')
+        AND sample_size >= 5
+        AND low_price_threshold IS NOT NULL
+      ORDER BY low_price_threshold ASC
       LIMIT $2`,
       [airportCodes, limit],
       { name: "getCheapestFlightsNow" }
@@ -192,7 +193,7 @@ const getCheapestFlightsNowCached = unstable_cache(
   ["cheapest-flights-now-v1"],
   {
     revalidate: 60 * 60,
-    tags: ["matrix-prices"],
+    tags: ["route-insights"],
   }
 );
 
