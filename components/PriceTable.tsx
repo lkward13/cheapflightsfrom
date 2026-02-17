@@ -58,24 +58,24 @@ export default function PriceTable({ destinations, metroSlug }: PriceTableProps)
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
             <th
-              className="text-left px-4 py-3 text-sm font-semibold text-gray-700 cursor-pointer hover:text-brand-primary"
+              className="text-left px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-pointer hover:text-brand-primary"
               onClick={() => handleSort("destination")}
             >
               Destination <SortIcon active={sortKey === "destination"} />
             </th>
             <th
-              className="text-right px-4 py-3 text-sm font-semibold text-gray-700 cursor-pointer hover:text-brand-primary"
+              className="text-right px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-pointer hover:text-brand-primary"
               onClick={() => handleSort("low_price")}
             >
               Deals From <SortIcon active={sortKey === "low_price"} />
             </th>
             <th
-              className="text-right px-4 py-3 text-sm font-semibold text-gray-700 cursor-pointer hover:text-brand-primary hidden sm:table-cell"
+              className="text-right px-3 py-2.5 text-sm font-semibold text-gray-700 cursor-pointer hover:text-brand-primary hidden sm:table-cell"
               onClick={() => handleSort("typical_price")}
             >
               Typical Price <SortIcon active={sortKey === "typical_price"} />
             </th>
-            <th className="text-right px-4 py-3 text-sm font-semibold text-gray-700 hidden md:table-cell">
+            <th className="text-right px-3 py-2.5 text-sm font-semibold text-gray-700 hidden md:table-cell">
               Best Months
             </th>
           </tr>
@@ -87,9 +87,9 @@ export default function PriceTable({ destinations, metroSlug }: PriceTableProps)
             return (
               <tr
                 key={`${dest.origin}-${dest.destination}`}
-                className={`border-b border-gray-100 hover:bg-brand-light/50 transition-colors ${i % 2 === 0 ? "bg-white" : "bg-gray-50/30"}`}
+                className={`border-b border-gray-100 hover:bg-brand-light transition-colors ${i % 2 === 0 ? "bg-white" : "bg-gray-50/30"}`}
               >
-                <td className="px-4 py-3">
+                <td className="px-3 py-2.5">
                   <Link
                     href={`/cheap-flights-from-${metroSlug}/to-${destSlug}`}
                     className="text-brand-primary hover:underline font-medium"
@@ -99,15 +99,15 @@ export default function PriceTable({ destinations, metroSlug }: PriceTableProps)
                   </Link>
                   <span className="text-xs text-gray-400 ml-1">({dest.destination})</span>
                 </td>
-                <td className="text-right px-4 py-3">
+                <td className="text-right px-3 py-2.5">
                   <span className="text-brand-accent font-bold">
                     {formatPrice(dest.low_price_threshold)}
                   </span>
                 </td>
-                <td className="text-right px-4 py-3 text-gray-600 hidden sm:table-cell">
+                <td className="text-right px-3 py-2.5 text-gray-600 hidden sm:table-cell">
                   {formatPrice(dest.typical_price)}
                 </td>
-                <td className="text-right px-4 py-3 text-sm text-gray-500 hidden md:table-cell">
+                <td className="text-right px-3 py-2.5 text-sm text-gray-500 hidden md:table-cell">
                   {cheapMonths.join(", ") || "—"}
                 </td>
               </tr>

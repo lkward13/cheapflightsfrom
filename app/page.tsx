@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative text-white py-28 sm:py-36 lg:py-44 px-4 overflow-hidden">
+      <section className="relative text-white py-20 sm:py-24 lg:py-32 px-4 overflow-hidden">
         <Image
           src="/hero.jpg"
           alt="Scenic travel destination"
@@ -51,11 +51,11 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-brand-dark/50" />
         <div className="relative max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-lg">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 drop-shadow-lg">
             <span className="text-brand-gold">Pay Less.</span>{" "}
             <span className="text-white">Travel More.</span>
           </h1>
-          <p className="text-xl sm:text-2xl lg:text-3xl text-white font-semibold mb-4 drop-shadow-lg">
+          <p className="text-xl sm:text-2xl lg:text-3xl text-white font-semibold mb-3 drop-shadow-lg">
             Flight Deals From Your City To Your Favorite Destination
           </p>
           <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-lg">
@@ -67,24 +67,24 @@ export default function Home() {
       </section>
 
       {/* Quote */}
-      <section className="bg-brand-primary py-8 text-center">
+      <section className="bg-brand-primary py-6 text-center">
         <p className="text-white/90 italic text-lg sm:text-xl max-w-3xl mx-auto px-4">
           &ldquo;Whether you think you can, or whether you think you can&apos;t, you&apos;re right.&rdquo;
         </p>
       </section>
 
       {/* Browse by City */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-3">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-shell-lg">
+        <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 section-title">
           Browse Cheap Flights By City
         </h2>
-        <p className="text-center text-gray-500 text-lg mb-12">
+        <p className="text-center text-gray-600 text-lg section-subtitle">
           Choose your departure city to see the best deals and price trends
         </p>
 
         {REGIONS.map((region) => (
-          <div key={region} className="mb-12">
-            <h3 className="text-lg font-bold text-brand-primary mb-5 uppercase tracking-wider flex items-center gap-2">
+          <div key={region} className="mb-10">
+            <h3 className="text-lg font-bold text-brand-primary mb-4 uppercase tracking-wider flex items-center gap-2">
               <span className="w-8 h-0.5 bg-brand-primary rounded-full" />
               {REGION_LABELS[region]}
             </h3>
@@ -117,12 +117,12 @@ export default function Home() {
       </section>
 
       {/* Tips */}
-      <section className="bg-gray-50 py-16 lg:py-20 px-4">
+      <section className="bg-gray-50 section-shell-lg px-4">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-10">
+          <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-8">
             Top Tips For Finding Cheap Flights
           </h2>
-          <div className="space-y-4 lg:space-y-5">
+          <div className="space-y-3 lg:space-y-4">
             {[
               {
                 title: "Book 3-8 weeks out for the sweet spot",
@@ -157,7 +157,7 @@ export default function Home() {
                 body: "The best deals sell out in 24-72 hours. Sign up for our free email alerts and we'll notify you the moment fares drop on your routes -- no need to check every day.",
               },
             ].map((tip, i) => (
-              <div key={i} className="flex gap-4 bg-white rounded-xl p-5 lg:p-6 shadow-sm">
+              <div key={i} className="flex gap-4 bg-white rounded-xl p-4 lg:p-5 shadow-sm border border-gray-100">
                 <span className="text-brand-primary font-bold text-xl shrink-0">
                   {i + 1}.
                 </span>
@@ -172,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 section-shell">
         <FAQSection items={FAQ_ITEMS} title="People Also Ask" />
       </section>
     </>

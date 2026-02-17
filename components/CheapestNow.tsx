@@ -32,8 +32,8 @@ export default function CheapestNow({
   }
 
   return (
-    <section className="mb-10">
-      <div className="flex items-center gap-2 mb-1">
+    <section className="mb-8">
+      <div className="flex items-center gap-2 mb-2">
         <h2 className="text-2xl font-bold text-gray-900">
           Cheapest Flights Right Now
         </h2>
@@ -42,11 +42,11 @@ export default function CheapestNow({
           <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
         </span>
       </div>
-      <p className="text-sm text-gray-500 mb-4">
+      <p className="text-sm text-gray-600 mb-3">
         Live fares from {metroName} updated in the last 72 hours
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
         {mixed.map((flight) => {
           const destSlug = getDestSlug(flight.destination);
           const city = getCityName(flight.destination);
@@ -57,7 +57,7 @@ export default function CheapestNow({
               key={`${flight.origin}-${flight.destination}`}
               href={`/cheap-flights-from-${metroSlug}/to-${destSlug}`}
               prefetch={false}
-              className="group bg-white border border-gray-200 rounded-lg p-4 hover:border-brand-primary hover:shadow-md transition-all"
+              className="group bg-white border border-gray-200 rounded-lg p-3 hover:border-brand-primary hover:shadow-md transition-all"
             >
               <div className="flex items-start justify-between">
                 <div className="min-w-0">

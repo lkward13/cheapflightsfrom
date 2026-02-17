@@ -23,8 +23,8 @@ export default function MonthlyCalendar({ data, title = "Monthly Price Guide" }:
   };
 
   return (
-    <section className="py-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
+    <section className="section-shell-sm">
+      <h2 className="text-2xl font-bold text-gray-900 mb-3">{title}</h2>
       <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-2">
         {MONTHS.map((m) => {
           const price = data[m] || 0;

@@ -94,7 +94,7 @@ export default async function RoutePage({ params }: PageProps) {
     .slice(0, 12);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 page-shell">
       <BreadCrumb
         items={[
           { label: "Home", href: "/" },
@@ -106,7 +106,7 @@ export default async function RoutePage({ params }: PageProps) {
         ]}
       />
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
         Cheap Flights From {metro.displayName} to {destCity}
       </h1>
 
@@ -125,8 +125,8 @@ export default async function RoutePage({ params }: PageProps) {
       />
 
       {narrative && (
-        <section className="py-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+        <section className="section-shell-sm">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Best Time to Fly from {metro.displayName} to {destCity}
           </h2>
           <p className="text-gray-700 leading-relaxed">{narrative}</p>
@@ -136,7 +136,7 @@ export default async function RoutePage({ params }: PageProps) {
       <PriceTrend data={priceTrend} />
 
       {/* Booking link */}
-      <section className="py-6">
+      <section className="section-shell-sm">
         <a
           href={`https://www.google.com/travel/flights?q=flights+from+${insights.origin.trim()}+to+${destIata}`}
           target="_blank"
@@ -152,8 +152,8 @@ export default async function RoutePage({ params }: PageProps) {
 
       {/* Related Routes */}
       {relatedDests.length > 0 && (
-        <section className="py-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <section className="section-shell">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Other Destinations From {metro.displayName}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

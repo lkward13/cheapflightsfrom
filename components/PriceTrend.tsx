@@ -42,11 +42,11 @@ export default function PriceTrend({ data }: PriceTrendProps) {
   const dateLabelIndices = [0, Math.floor(data.length / 2), data.length - 1];
 
   return (
-    <section className="py-6">
+    <section className="section-shell-sm">
       <h2 className="text-2xl font-bold text-gray-900 mb-4">
         Price Trend (Last 90 Days)
       </h2>
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
+      <div className="bg-white rounded-xl border border-gray-200 p-3 lg:p-4">
         <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full h-auto">
           {/* Grid lines */}
           {yLabels.map((label, i) => {
@@ -135,7 +135,7 @@ export default function PriceTrend({ data }: PriceTrendProps) {
           </defs>
         </svg>
 
-        <div className="flex justify-between text-sm text-gray-600 mt-2 px-1">
+        <div className="flex justify-between text-sm text-gray-600 mt-1 px-1">
           <span>
             Low: <span className="font-semibold text-green-700">{formatPrice(minPrice)}</span>
           </span>

@@ -46,13 +46,13 @@ export default function RegionTabs({
   };
 
   return (
-    <section className="mb-10">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">
+    <section className="mb-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-3">
         Browse Destinations by Region
       </h2>
 
       {/* Region tabs */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-3">
         {availableRegions.map((region) => {
           const isActive = region === activeRegion;
           const cheapest = cheapestByRegion(region);
@@ -60,7 +60,7 @@ export default function RegionTabs({
             <button
               key={region}
               onClick={() => setActiveRegion(region)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
+              className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all border ${
                 isActive
                   ? "bg-brand-primary text-white border-brand-primary shadow-sm"
                   : "bg-white text-gray-700 border-gray-200 hover:border-brand-primary hover:text-brand-primary"
@@ -94,13 +94,13 @@ export default function RegionTabs({
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">
+                <th className="text-left px-3 py-2.5 text-sm font-semibold text-gray-700">
                   Destination
                 </th>
-                <th className="text-right px-4 py-3 text-sm font-semibold text-gray-700">
+                <th className="text-right px-3 py-2.5 text-sm font-semibold text-gray-700">
                   Deals From
                 </th>
-                <th className="text-right px-4 py-3 text-sm font-semibold text-gray-700 hidden sm:table-cell">
+                <th className="text-right px-3 py-2.5 text-sm font-semibold text-gray-700 hidden sm:table-cell">
                   Typical Price
                 </th>
               </tr>
@@ -111,11 +111,11 @@ export default function RegionTabs({
                 return (
                   <tr
                     key={dest.destination}
-                    className={`border-b border-gray-100 hover:bg-brand-light/50 transition-colors ${
+                    className={`border-b border-gray-100 hover:bg-brand-light transition-colors ${
                       i % 2 === 0 ? "bg-white" : "bg-gray-50/30"
                     }`}
                   >
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-2.5">
                       <Link
                         href={`/cheap-flights-from-${metroSlug}/to-${destSlug}`}
                         className="text-brand-primary hover:underline font-medium"
@@ -127,12 +127,12 @@ export default function RegionTabs({
                         ({dest.destination})
                       </span>
                     </td>
-                    <td className="text-right px-4 py-3">
+                    <td className="text-right px-3 py-2.5">
                       <span className="text-brand-accent font-bold">
                         {formatPrice(dest.low_price_threshold)}
                       </span>
                     </td>
-                    <td className="text-right px-4 py-3 text-gray-600 hidden sm:table-cell">
+                    <td className="text-right px-3 py-2.5 text-gray-600 hidden sm:table-cell">
                       {formatPrice(dest.typical_price)}
                     </td>
                   </tr>

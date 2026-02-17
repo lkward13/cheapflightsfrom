@@ -29,20 +29,20 @@ export default function FAQSection({ items, title = "Frequently Asked Questions"
   };
 
   return (
-    <section className="py-8">
+    <section className="section-shell-sm">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">{title}</h2>
-      <div className="space-y-3">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
+      <div className="space-y-2">
         {items.map((item, index) => (
           <div
             key={index}
             className="border border-gray-200 rounded-lg overflow-hidden"
           >
             <button
-              className="w-full text-left px-5 py-4 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="w-full text-left px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors"
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
             >
               <span className="font-medium text-gray-900 pr-4">{item.question}</span>
@@ -56,7 +56,7 @@ export default function FAQSection({ items, title = "Frequently Asked Questions"
               </svg>
             </button>
             {openIndex === index && (
-              <div className="px-5 py-4 text-gray-600 leading-relaxed">
+              <div className="px-4 py-3 text-gray-700 leading-relaxed text-sm">
                 {item.answer}
               </div>
             )}

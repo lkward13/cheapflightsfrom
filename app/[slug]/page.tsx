@@ -246,7 +246,7 @@ export default async function HubPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 page-shell">
       <BreadCrumb
         items={[
           { label: "Home", href: "/" },
@@ -254,10 +254,10 @@ export default async function HubPage({ params }: PageProps) {
         ]}
       />
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
         Cheap Flights From {metro.displayName}
       </h1>
-      <p className="text-gray-600 mb-8">
+      <p className="text-gray-700 mb-6">
         We track prices to {destCount} destinations from {airportDesc} daily.
         Here are the best fares right now.
       </p>
@@ -272,8 +272,8 @@ export default async function HubPage({ params }: PageProps) {
           />
 
           {/* Classic top destinations table */}
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
               Top Destinations
             </h2>
             <PriceTable destinations={deduped} metroSlug={metro.slug} />
@@ -298,8 +298,8 @@ export default async function HubPage({ params }: PageProps) {
       )}
 
       {recentDeals.length > 0 && (
-        <section className="py-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <section className="section-shell-sm">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Recent Deals From {metro.displayName}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -330,7 +330,7 @@ export default async function HubPage({ params }: PageProps) {
       )}
 
       {/* Email signup */}
-      <section className="bg-brand-dark rounded-xl p-8 text-center my-8">
+      <section className="bg-brand-dark rounded-xl p-6 lg:p-7 text-center my-6">
         <h2 className="text-2xl font-bold text-white mb-1">
           Get Deal Alerts From {metro.displayName}
         </h2>

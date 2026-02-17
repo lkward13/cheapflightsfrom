@@ -13,11 +13,57 @@
 
 body {
   font-family: var(--font-sans);
-  color: #111827;
+  color: #1f2937;
   background: #ffffff;
 }
 
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Shared layout rhythm to avoid excessive whitespace */
+.page-shell {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.section-shell {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.section-shell-lg {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.section-shell-sm {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.section-title {
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .page-shell {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .section-shell {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .section-shell-lg {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }

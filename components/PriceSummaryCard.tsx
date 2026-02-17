@@ -18,8 +18,8 @@ export default function PriceSummaryCard({
   dataQuality,
 }: PriceSummaryCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-5">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="text-center">
           <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Typical Price</div>
           <div className="text-2xl font-bold text-gray-900">{formatPrice(typicalPrice)}</div>
