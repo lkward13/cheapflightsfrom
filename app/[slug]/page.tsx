@@ -254,25 +254,30 @@ export default async function HubPage({ params }: PageProps) {
         ]}
       />
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
-        Cheap Flights From {metro.displayName}
-      </h1>
-      <p className="text-gray-700 mb-6">
-        We track prices to {destCount} destinations from {airportDesc} daily.
-        Here are the best fares right now.
-      </p>
+      <section className="bg-gradient-to-r from-brand-dark to-brand-primary rounded-2xl p-6 lg:p-8 mb-6 text-white shadow-lg">
+        <p className="text-sm uppercase tracking-wider text-white/80 mb-1">Live City Snapshot</p>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+          Cheap Flights From {metro.displayName}
+        </h1>
+        <p className="text-white/90 max-w-3xl">
+          We track prices to <span className="font-semibold text-brand-gold">{destCount}</span> destinations from {airportDesc} daily.
+          Here are the best fares right now.
+        </p>
+      </section>
 
       {deduped.length > 0 ? (
         <>
           {/* Cheapest flights right now (live matrix prices) */}
-          <CheapestNow
-            flights={cheapestNow}
-            metroSlug={metro.slug}
-            metroName={metro.displayName}
-          />
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
+            <CheapestNow
+              flights={cheapestNow}
+              metroSlug={metro.slug}
+              metroName={metro.displayName}
+            />
+          </div>
 
           {/* Classic top destinations table */}
-          <section className="mb-8">
+          <section className="mb-6 bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
               Top Destinations
             </h2>
@@ -280,16 +285,20 @@ export default async function HubPage({ params }: PageProps) {
           </section>
 
           {/* Region-tabbed browser */}
-          <RegionTabs
-            destinations={regionDests}
-            metroSlug={metro.slug}
-            regionCounts={regionCounts}
-          />
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
+            <RegionTabs
+              destinations={regionDests}
+              metroSlug={metro.slug}
+              regionCounts={regionCounts}
+            />
+          </div>
 
-          <MonthlyCalendar
-            data={monthlyAgg}
-            title={`Best Months to Fly From ${metro.displayName}`}
-          />
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
+            <MonthlyCalendar
+              data={monthlyAgg}
+              title={`Best Months to Fly From ${metro.displayName}`}
+            />
+          </div>
         </>
       ) : (
         <p className="text-gray-500 py-8">
@@ -298,7 +307,7 @@ export default async function HubPage({ params }: PageProps) {
       )}
 
       {recentDeals.length > 0 && (
-        <section className="section-shell-sm">
+        <section className="section-shell-sm bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Recent Deals From {metro.displayName}
           </h2>
@@ -330,14 +339,16 @@ export default async function HubPage({ params }: PageProps) {
       )}
 
       {/* Email signup */}
-      <section className="bg-brand-dark rounded-xl p-6 lg:p-7 text-center my-6">
+      <section className="bg-brand-dark rounded-2xl p-6 lg:p-7 text-center my-6 shadow-lg border border-brand-primary/30">
         <h2 className="text-2xl font-bold text-white mb-1">
           Get Deal Alerts From {metro.displayName}
         </h2>
         <EmailSignup darkBg defaultOrigin={metro.slug} />
       </section>
 
-      <FAQSection items={faqItems} />
+      <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md">
+        <FAQSection items={faqItems} />
+      </div>
     </div>
   );
 }

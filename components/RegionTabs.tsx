@@ -46,13 +46,13 @@ export default function RegionTabs({
   };
 
   return (
-    <section className="mb-8">
+    <section className="mb-2">
       <h2 className="text-2xl font-bold text-gray-900 mb-3">
         Browse Destinations by Region
       </h2>
 
       {/* Region tabs */}
-      <div className="flex flex-wrap gap-2 mb-3">
+      <div className="flex flex-wrap gap-2 mb-4">
         {availableRegions.map((region) => {
           const isActive = region === activeRegion;
           const cheapest = cheapestByRegion(region);
@@ -60,10 +60,10 @@ export default function RegionTabs({
             <button
               key={region}
               onClick={() => setActiveRegion(region)}
-              className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all border ${
+              className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all border ${
                 isActive
-                  ? "bg-brand-primary text-white border-brand-primary shadow-sm"
-                  : "bg-white text-gray-700 border-gray-200 hover:border-brand-primary hover:text-brand-primary"
+                  ? "bg-brand-primary text-white border-brand-primary shadow-md"
+                  : "bg-white text-gray-700 border-gray-200 hover:border-brand-primary hover:text-brand-primary hover:shadow-sm"
               }`}
             >
               {REGION_LABELS[region]}
@@ -90,7 +90,7 @@ export default function RegionTabs({
 
       {/* Destination grid for active region */}
       {filtered.length > 0 ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border border-gray-200 rounded-xl">
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">

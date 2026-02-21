@@ -51,6 +51,13 @@ html {
   margin-bottom: 1.5rem;
 }
 
+.content-panel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
 @media (min-width: 1024px) {
   .page-shell {
     padding-top: 2rem;

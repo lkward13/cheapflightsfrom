@@ -39,10 +39,14 @@ export default function FAQSection({ items, title = "Frequently Asked Questions"
         {items.map((item, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg overflow-hidden"
+            className="border border-gray-200 rounded-xl overflow-hidden"
           >
             <button
-              className="w-full text-left px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors"
+              className={`w-full text-left px-4 py-3 flex items-center justify-between transition-colors ${
+                openIndex === index
+                  ? "bg-brand-primary/10 border-b border-brand-primary/30"
+                  : "bg-gray-50 hover:bg-gray-100"
+              }`}
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
             >
               <span className="font-medium text-gray-900 pr-4">{item.question}</span>

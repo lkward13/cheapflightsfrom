@@ -73,30 +73,32 @@ export default function HeaderNav() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white absolute top-full inset-x-0">
-          <div className="px-4 py-3 space-y-2">
+        <div className="md:hidden fixed inset-x-0 top-16 bg-white border-t border-gray-200 shadow-lg z-50 max-h-[80vh] overflow-y-auto">
+          <div className="px-5 py-4 space-y-1">
             <Link
               href="/"
-              className="block py-2 text-brand-dark hover:text-brand-primary"
+              className="block py-2.5 text-base font-medium text-brand-dark hover:text-brand-primary border-b border-gray-100"
               onClick={() => setMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="block py-2 text-brand-dark hover:text-brand-primary"
+              className="block py-2.5 text-base font-medium text-brand-dark hover:text-brand-primary border-b border-gray-100"
               onClick={() => setMenuOpen(false)}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="block py-2 text-brand-dark hover:text-brand-primary"
+              className="block py-2.5 text-base font-medium text-brand-dark hover:text-brand-primary border-b border-gray-100"
               onClick={() => setMenuOpen(false)}
             >
               Contact
             </Link>
-            <MegaMenu mobile onClose={() => setMenuOpen(false)} />
+            <div className="pt-2">
+              <MegaMenu mobile onClose={() => setMenuOpen(false)} />
+            </div>
           </div>
         </div>
       )}

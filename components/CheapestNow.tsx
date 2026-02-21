@@ -32,7 +32,7 @@ export default function CheapestNow({
   }
 
   return (
-    <section className="mb-8">
+    <section className="mb-2">
       <div className="flex items-center gap-2 mb-2">
         <h2 className="text-2xl font-bold text-gray-900">
           Cheapest Flights Right Now
@@ -57,17 +57,18 @@ export default function CheapestNow({
               key={`${flight.origin}-${flight.destination}`}
               href={`/cheap-flights-from-${metroSlug}/to-${destSlug}`}
               prefetch={false}
-              className="group bg-white border border-gray-200 rounded-lg p-3 hover:border-brand-primary hover:shadow-md transition-all"
+              className="group bg-white border border-gray-200 rounded-xl p-3 hover:border-brand-primary hover:shadow-lg transition-all relative overflow-hidden"
             >
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-primary to-brand-gold opacity-70 group-hover:opacity-100" />
               <div className="flex items-start justify-between">
                 <div className="min-w-0">
                   <p className="font-semibold text-gray-900 group-hover:text-brand-primary truncate">
                     {city}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     {flight.destination}
                     {isIntl && (
-                      <span className="ml-1 text-brand-primary">intl</span>
+                      <span className="ml-1 text-brand-primary font-semibold uppercase">intl</span>
                     )}
                   </p>
                 </div>

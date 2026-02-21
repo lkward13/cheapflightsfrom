@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const GA_ID = "G-KMVERFKX5C";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -54,6 +57,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
+      </Script>
       <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}>
         <Header />
         <main className="flex-1">{children}</main>

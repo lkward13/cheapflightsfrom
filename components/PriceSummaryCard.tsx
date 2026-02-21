@@ -35,7 +35,7 @@ export default function PriceSummaryCard({
           </div>
         </div>
         <div className="text-center">
-          <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">All-Time Low</div>
+          <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Lowest We&apos;ve Seen</div>
           <div className="text-2xl font-bold text-green-600">{formatPrice(allTimeLow)}</div>
         </div>
       </div>

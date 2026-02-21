@@ -53,7 +53,7 @@ export default function PriceTable({ destinations, metroSlug }: PriceTableProps)
   });
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto border border-gray-200 rounded-xl">
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">

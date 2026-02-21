@@ -106,26 +106,36 @@ export default async function RoutePage({ params }: PageProps) {
         ]}
       />
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-        Cheap Flights From {metro.displayName} to {destCity}
-      </h1>
+      <section className="bg-gradient-to-r from-brand-dark to-brand-primary rounded-2xl p-6 lg:p-7 mb-6 text-white shadow-lg">
+        <p className="text-sm uppercase tracking-wider text-white/80 mb-1">Route Price Intelligence</p>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+          Cheap Flights From {metro.displayName} to {destCity}
+        </h1>
+        <p className="text-white/90">
+          Live pricing benchmarks, monthly patterns, and historical lows for this route.
+        </p>
+      </section>
 
-      <PriceSummaryCard
-        typicalPrice={insights.typical_price}
-        lowPrice={insights.low_price_threshold}
-        highPrice={insights.high_price_threshold}
-        allTimeLow={insights.min_price_ever}
-        sampleSize={insights.sample_size}
-        dataQuality={insights.data_quality}
-      />
+      <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
+        <PriceSummaryCard
+          typicalPrice={insights.typical_price}
+          lowPrice={insights.low_price_threshold}
+          highPrice={insights.high_price_threshold}
+          allTimeLow={insights.min_price_ever}
+          sampleSize={insights.sample_size}
+          dataQuality={insights.data_quality}
+        />
+      </div>
 
-      <MonthlyCalendar
-        data={insights.monthly_typical}
-        title="Monthly Price Guide"
-      />
+      <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
+        <MonthlyCalendar
+          data={insights.monthly_typical}
+          title="Monthly Price Guide"
+        />
+      </div>
 
       {narrative && (
-        <section className="section-shell-sm">
+        <section className="section-shell-sm bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Best Time to Fly from {metro.displayName} to {destCity}
           </h2>
@@ -133,15 +143,17 @@ export default async function RoutePage({ params }: PageProps) {
         </section>
       )}
 
-      <PriceTrend data={priceTrend} />
+      <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
+        <PriceTrend data={priceTrend} />
+      </div>
 
       {/* Booking link */}
-      <section className="section-shell-sm">
+      <section className="section-shell-sm bg-brand-dark rounded-2xl p-5 text-center border border-brand-primary/25 shadow-lg mb-6">
         <a
           href={`https://www.google.com/travel/flights?q=flights+from+${insights.origin.trim()}+to+${destIata}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-brand-dark text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-primary transition-colors"
+          className="inline-flex items-center gap-2 bg-brand-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-gold hover:text-brand-dark transition-colors"
         >
           Search Flights on Google
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +164,7 @@ export default async function RoutePage({ params }: PageProps) {
 
       {/* Related Routes */}
       {relatedDests.length > 0 && (
-        <section className="section-shell">
+        <section className="section-shell bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Other Destinations From {metro.displayName}
           </h2>

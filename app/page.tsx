@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative text-white py-20 sm:py-24 lg:py-32 px-4 overflow-hidden">
+      <section className="relative text-white py-20 sm:py-24 lg:py-32 px-4 overflow-hidden border-b border-white/15">
         <Image
           src="/hero.jpg"
           alt="Scenic travel destination"
@@ -49,25 +49,30 @@ export default function Home() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-brand-dark/50" />
+        <div className="absolute inset-0 bg-brand-dark/65" />
         <div className="relative max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 drop-shadow-lg">
-            <span className="text-brand-gold">Pay Less.</span>{" "}
-            <span className="text-white">Travel More.</span>
-          </h1>
-          <p className="text-xl sm:text-2xl lg:text-3xl text-white font-semibold mb-3 drop-shadow-lg">
-            Flight Deals From Your City To Your Favorite Destination
-          </p>
-          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-lg">
-            We track prices on thousands of routes daily and alert you when fares drop.
-            Save more and search less.
-          </p>
-          <EmailSignup darkBg />
+          <div className="bg-brand-dark/45 border border-white/20 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-2xl backdrop-blur-[1px]">
+            <p className="inline-flex items-center gap-2 text-sm sm:text-base font-semibold text-brand-gold bg-black/30 border border-brand-gold/40 rounded-full px-4 py-1.5 mb-4">
+              Live Fare Tracking Across Thousands of Routes
+            </p>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 drop-shadow-lg">
+              <span className="text-brand-gold">Pay Less.</span>{" "}
+              <span className="text-white">Travel More.</span>
+            </h1>
+            <p className="text-xl sm:text-2xl lg:text-3xl text-white font-semibold mb-3 drop-shadow-lg">
+              Flight Deals From Your City To Your Favorite Destination
+            </p>
+            <p className="text-lg sm:text-xl text-white/95 max-w-3xl mx-auto drop-shadow-lg">
+              We track prices on thousands of routes daily and alert you when fares drop.
+              Save more and search less.
+            </p>
+            <EmailSignup darkBg />
+          </div>
         </div>
       </section>
 
       {/* Quote */}
-      <section className="bg-brand-primary py-6 text-center">
+      <section className="bg-brand-primary py-6 text-center border-b border-brand-dark/10">
         <p className="text-white/90 italic text-lg sm:text-xl max-w-3xl mx-auto px-4">
           &ldquo;Whether you think you can, or whether you think you can&apos;t, you&apos;re right.&rdquo;
         </p>
@@ -85,7 +90,7 @@ export default function Home() {
         {REGIONS.map((region) => (
           <div key={region} className="mb-10">
             <h3 className="text-lg font-bold text-brand-primary mb-4 uppercase tracking-wider flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-brand-primary rounded-full" />
+              <span className="w-10 h-0.5 bg-brand-primary rounded-full" />
               {REGION_LABELS[region]}
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4">
@@ -93,19 +98,20 @@ export default function Home() {
                 <Link
                   key={metro.slug}
                   href={`/cheap-flights-from-${metro.slug}`}
-                  className="relative bg-white border border-gray-200 rounded-xl px-5 py-4 lg:px-6 lg:py-5 hover:border-brand-primary/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden"
+                  className="relative bg-white border border-gray-200 rounded-xl px-5 py-4 lg:px-6 lg:py-5 shadow-sm hover:border-brand-primary/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group overflow-hidden"
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary to-brand-gold rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-brand-primary to-brand-gold rounded-l-xl opacity-70 group-hover:opacity-100 transition-opacity duration-200" />
+                  <div className="absolute top-0 right-0 h-8 w-8 bg-[rgba(56,183,255,0.06)] rounded-bl-xl" />
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="font-semibold text-gray-800 group-hover:text-brand-primary transition-colors lg:text-lg block">
+                      <span className="font-semibold text-gray-900 group-hover:text-brand-primary transition-colors lg:text-lg block">
                         {metro.displayName}
                       </span>
-                      <span className="text-xs lg:text-sm text-gray-400 mt-1 block">
+                      <span className="text-xs lg:text-sm text-gray-500 mt-1 block">
                         {metro.airports.join(", ")}
                       </span>
                     </div>
-                    <svg className="w-4 h-4 text-gray-300 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-4 h-4 text-gray-400 group-hover:text-brand-primary/75 group-hover:translate-x-0.5 transition-all shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
@@ -117,11 +123,14 @@ export default function Home() {
       </section>
 
       {/* Tips */}
-      <section className="bg-gray-50 section-shell-lg px-4">
+      <section className="bg-gradient-to-b from-gray-50 to-white section-shell-lg px-4 border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-8">
+          <h2 className="text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-2">
             Top Tips For Finding Cheap Flights
           </h2>
+          <p className="text-center text-gray-600 mb-8 text-lg">
+            Quick wins that consistently cut flight costs.
+          </p>
           <div className="space-y-3 lg:space-y-4">
             {[
               {
@@ -157,8 +166,8 @@ export default function Home() {
                 body: "The best deals sell out in 24-72 hours. Sign up for our free email alerts and we'll notify you the moment fares drop on your routes -- no need to check every day.",
               },
             ].map((tip, i) => (
-              <div key={i} className="flex gap-4 bg-white rounded-xl p-4 lg:p-5 shadow-sm border border-gray-100">
-                <span className="text-brand-primary font-bold text-xl shrink-0">
+              <div key={i} className="flex gap-4 bg-white rounded-xl p-4 lg:p-5 shadow-md border border-gray-100">
+                <span className="text-brand-primary font-bold text-xl shrink-0 bg-brand-primary/10 h-8 w-8 rounded-full inline-flex items-center justify-center">
                   {i + 1}.
                 </span>
                 <div>
@@ -173,7 +182,9 @@ export default function Home() {
 
       {/* FAQ */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 section-shell">
-        <FAQSection items={FAQ_ITEMS} title="People Also Ask" />
+        <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6 shadow-md">
+          <FAQSection items={FAQ_ITEMS} title="People Also Ask" />
+        </div>
       </section>
     </>
   );
