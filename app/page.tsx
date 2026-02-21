@@ -46,7 +46,9 @@ export default function Home() {
           alt="Scenic travel destination"
           fill
           priority
-          sizes="100vw"
+          fetchPriority="high"
+          sizes="(max-width: 768px) 100vw, 100vw"
+          quality={75}
           className="object-cover"
         />
         <div className="absolute inset-0 bg-brand-dark/65" />
