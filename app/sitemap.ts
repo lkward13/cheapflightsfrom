@@ -1,46 +1,48 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { METROS, AIRPORT_TO_METRO } from "@/lib/metro-data";
 import { getDestSlug } from "@/lib/city-mapping";
 import { getAllQualifyingRoutes } from "@/lib/queries";
 
 export const revalidate = 86400; // Cache sitemap for 24 hours
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://cheapflightsfrom.us";
+const BASE_URL = "https://cheapflightsfrom.us";
+
+/**
+ * ID 0 = static + hubs (no DB). ID 1 = route pages.
+ * /sitemap.xml becomes an index; /sitemap/0.xml, /sitemap/1.xml are child sitemaps.
+ */
+export function generateSitemaps() {
+  return [{ id: 0 }, { id: 1 }];
+}
+
+export default async function sitemap(props: {
+  id: Promise<string>;
+}): Promise<MetadataRoute.Sitemap> {
+  const id = await props.id;
   const now = new Date();
+  const entries: MetadataRoute.Sitemap = [];
 
-  const entries: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-  ];
-
-  // Hub pages
-  for (const metro of METROS) {
-    entries.push({
-      url: `${baseUrl}/cheap-flights-from-${metro.slug}`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.8,
-    });
+  if (id === "0") {
+    // Static pages + hub pages (no route DB query)
+    entries.push(
+      { url: BASE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
+      { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
+      { url: `${BASE_URL}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.3 }
+    );
+    for (const metro of METROS) {
+      entries.push({
+        url: `${BASE_URL}/cheap-flights-from-${metro.slug}`,
+        lastModified: now,
+        changeFrequency: "daily",
+        priority: 0.8,
+      });
+    }
+    return entries;
   }
 
-  // Route pages
+  // Route pages (id 1)
+  if (id !== "1") return entries;
+
   try {
     const routes = await getAllQualifyingRoutes();
     const seen = new Set<string>();
@@ -56,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       seen.add(key);
 
       entries.push({
-        url: `${baseUrl}/cheap-flights-from-${metro.slug}/to-${dSlug}`,
+        url: `${BASE_URL}/cheap-flights-from-${metro.slug}/to-${dSlug}`,
         lastModified: now,
         changeFrequency: "daily",
         priority: 0.6,
