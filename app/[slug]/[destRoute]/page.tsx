@@ -8,9 +8,11 @@ import {
   getRouteInsights,
   getRoutePriceTrend,
   getDestinationsForOrigins,
+  getActiveDeal,
 } from "@/lib/queries";
 import { formatPrice, getCheapestMonths, generateBestTimeNarrative } from "@/lib/utils";
 import PriceSummaryCard from "@/components/PriceSummaryCard";
+import ActiveDealBanner from "@/components/ActiveDealBanner";
 import MonthlyCalendar from "@/components/MonthlyCalendar";
 import PriceTrend from "@/components/PriceTrend";
 import BreadCrumb from "@/components/BreadCrumb";
@@ -78,9 +80,10 @@ export default async function RoutePage({ params }: PageProps) {
 
   const { metro, destIata, destCity, insights } = routeCore;
 
-  const [priceTrend, otherDests] = await Promise.all([
+  const [priceTrend, otherDests, activeDeal] = await Promise.all([
     getRoutePriceTrend(metro.airports, destIata),
     getDestinationsForOrigins(metro.airports),
+    getActiveDeal(metro.airports, destIata),
   ]);
 
   const narrative = generateBestTimeNarrative(
@@ -115,6 +118,14 @@ export default async function RoutePage({ params }: PageProps) {
           Live pricing benchmarks, monthly patterns, and historical lows for this route.
         </p>
       </section>
+
+      {activeDeal && (
+        <ActiveDealBanner
+          deal={activeDeal}
+          originCode={insights.origin}
+          destCity={destCity}
+        />
+      )}
 
       <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-md mb-6">
         <PriceSummaryCard

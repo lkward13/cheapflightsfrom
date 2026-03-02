@@ -56,6 +56,17 @@ export interface SentDeal {
   sent_at: string;
 }
 
+export interface ActiveDeal {
+  origin: string;
+  destination: string;
+  price: number;
+  tier: number | null;
+  dest_name: string | null;
+  deal_body: string | null;
+  date_count: number | null;
+  sent_at: string;
+}
+
 export interface PriceTrendPoint {
   min_price: number;
   scraped_date: string;
@@ -364,6 +375,44 @@ export async function getRoutePriceTrend(
 ): Promise<PriceTrendPoint[]> {
   return getRoutePriceTrendCached(
     normalizeCodes(origins),
+    normalizeCode(destination)
+  );
+}
+
+// ---- Active Deal Query (for route pages) ----
+
+const getActiveDealCached = unstable_cache(
+  async (
+    airportCodes: string[],
+    destination: string
+  ): Promise<ActiveDeal | null> => {
+    const rows = await query<ActiveDeal>(
+      `SELECT origin, destination, price, tier, dest_name, deal_body,
+              date_count, sent_at::text
+       FROM sent_deals
+       WHERE origin = ANY($1)
+         AND destination = $2
+         AND sent_at > NOW() - INTERVAL '7 days'
+       ORDER BY sent_at DESC
+       LIMIT 1`,
+      [airportCodes, destination],
+      { name: "getActiveDeal" }
+    );
+    return rows[0] || null;
+  },
+  ["active-deal-v1"],
+  {
+    revalidate: 60 * 5,
+    tags: ["sent-deals"],
+  }
+);
+
+export async function getActiveDeal(
+  airportCodes: string[],
+  destination: string
+): Promise<ActiveDeal | null> {
+  return getActiveDealCached(
+    normalizeCodes(airportCodes),
     normalizeCode(destination)
   );
 }

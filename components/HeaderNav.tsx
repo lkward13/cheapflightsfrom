@@ -38,6 +38,9 @@ export default function HeaderNav() {
           </button>
           {megaOpen && <MegaMenu onClose={() => setMegaOpen(false)} />}
         </div>
+        <Link href="/how-to-use" className="text-brand-dark hover:text-brand-primary transition-colors">
+          How to Use
+        </Link>
         <Link href="/about" className="text-brand-dark hover:text-brand-primary transition-colors">
           About
         </Link>
@@ -81,6 +84,13 @@ export default function HeaderNav() {
               onClick={() => setMenuOpen(false)}
             >
               Home
+            </Link>
+            <Link
+              href="/how-to-use"
+              className="block py-2.5 text-base font-medium text-brand-dark hover:text-brand-primary border-b border-gray-100"
+              onClick={() => setMenuOpen(false)}
+            >
+              How to Use
             </Link>
             <Link
               href="/about"
