@@ -83,7 +83,7 @@ export default async function RoutePage({ params }: PageProps) {
   const [priceTrend, otherDests, activeDeal] = await Promise.all([
     getRoutePriceTrend(metro.airports, destIata),
     getDestinationsForOrigins(metro.airports),
-    getActiveDeal(metro.airports, destIata),
+    getActiveDeal(metro.airports, destIata).catch(() => null),
   ]);
 
   const narrative = generateBestTimeNarrative(

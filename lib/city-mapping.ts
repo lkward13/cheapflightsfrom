@@ -24,5 +24,7 @@ export function findIataFromSlug(slug: string): string | null {
       .replace(/^-|-$/g, "");
     if (citySlug === slug) return iata;
   }
+  // Fallback: if slug is exactly 3 letters, treat as raw IATA code
+  if (/^[a-z]{3}$/.test(slug)) return slug.toUpperCase();
   return null;
 }
