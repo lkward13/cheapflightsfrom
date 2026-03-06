@@ -43,9 +43,12 @@ export default function PriceTrend({ data }: PriceTrendProps) {
 
   return (
     <section className="section-shell-sm">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">
-        Price Trend (Last 90 Days)
+      <h2 className="text-2xl font-bold text-gray-900 mb-1">
+        Cheapest Fare Found (Last 90 Days)
       </h2>
+      <p className="text-sm text-gray-500 mb-4">
+        The lowest round-trip price available on each day we checked
+      </p>
       <div className="bg-white rounded-xl border border-gray-200 p-3 lg:p-4">
         <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full h-auto">
           {/* Grid lines */}
@@ -137,13 +140,13 @@ export default function PriceTrend({ data }: PriceTrendProps) {
 
         <div className="flex justify-between text-sm text-gray-600 mt-1 px-1">
           <span>
-            Low: <span className="font-semibold text-green-700">{formatPrice(minPrice)}</span>
+            Best: <span className="font-semibold text-green-700">{formatPrice(minPrice)}</span>
           </span>
           <span>
             {data.length} price checks
           </span>
           <span>
-            High: <span className="font-semibold text-red-600">{formatPrice(maxPrice)}</span>
+            Worst: <span className="font-semibold text-red-600">{formatPrice(maxPrice)}</span>
           </span>
         </div>
       </div>
