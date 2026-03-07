@@ -9,6 +9,7 @@ export function getPool(): Pool {
       max: 1,
       idleTimeoutMillis: 5000,
       connectionTimeoutMillis: 5000,
+      query_timeout: 30000,
     };
 
     if (process.env.DATABASE_URL?.includes("34.")) {
